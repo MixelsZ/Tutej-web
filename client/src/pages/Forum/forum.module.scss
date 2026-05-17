@@ -1,0 +1,94 @@
+$bg-light: #f8f9fa;
+$white: #ffffff;
+$primary: #2563eb;
+$text-main: #1e293b;
+$text-muted: #64748b;
+$border: #e2e8f0;
+
+.forumWrapper {
+  background-color: $bg-light;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+.postCard {
+  background: $white;
+  border-radius: 12px;
+  border: 1px solid $border;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  .authorInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: $primary;
+      object-fit: cover;
+    }
+
+    .name {
+      font-weight: 600;
+      color: $text-main;
+      display: block;
+    }
+
+    .date {
+      font-size: 0.8rem;
+      color: $text-muted;
+    }
+  }
+
+  .content {
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: $text-main;
+    }
+    p {
+      color: darken($text-muted, 10%);
+      line-height: 1.5;
+    }
+    .postMedia {
+      margin-top: 1rem;
+      border-radius: 8px;
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+    }
+  }
+
+  .footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid $border;
+    display: flex;
+    gap: 1rem;
+
+    button {
+      background: none;
+      border: none;
+      color: $text-muted;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+  }
+}
