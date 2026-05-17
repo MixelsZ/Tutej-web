@@ -9,6 +9,15 @@ interface Forum {
 	description: string
 	icon: string | null
 	_count: { posts: number }
+import styles from './forum.module.scss'
+import Heading from '../../components/Heading'
+
+export function Forum() {
+	return (
+		<div className={styles.container}>
+			<Heading text="Forum" />
+		</div>
+	)
 }
 
 const FORUM_ICONS: Record<string, string> = {
