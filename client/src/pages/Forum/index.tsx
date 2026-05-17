@@ -1,57 +1,91 @@
-import styles from './Forum.module.scss';
+// client/src/pages/Forum/index.tsx
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styles from './forum.module.scss'
 
-const mockPosts = [
-	{
-		id: 1,
-		title: "Remont ulicy Głównej",
-		content: "Czy ktoś wie, jak długo potrwają utrudnienia pod blokiem nr 4?",
-		createdAt: "2026-05-10T12:00:00Z",
-		author: { firstName: "Jan", lastName: "Kowalski", photo: null },
-		_count: { comments: 5 }
+interface Forum {
+	id: number
+	name: string
+	description: string
+	icon: string | null
+	_count: { posts: number }
+}
+
+const FORUM_ICONS: Record<string, string> = {
+	default: '💬',
+	garden: '🌿',
+	animals: '🐾',
+	events: '📅',
+	help: '🤝',
+	safety: '🔒',
+	buy: '🛒',
+	kids: '🧒',
+}
+
+export default function ForumPage() {
+	const [forums, setForums] = useState<Forum[]>([])
+	const [loading, setLoading] = useState(true)
+	const navigate = useNavigate()
+
+	useEffect(() => {
+    const fetchForums = async () => {
+        try {
+            const res = await fetch('http://localhost:5000/api/forums')
+            const data = await res.json()
+            setForums(data)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+    }
+    fetchForums()
+}, [])
+
+	if (loading) {
+		return (
+			<div className={styles.loadingState}>
+				{[...Array(4)].map((_, i) => (
+					<div key={i} className={styles.skeleton} />
+				))}
+			</div>
+		)
 	}
-];
 
-const PostCard = ({ post }: { post: any }) => {
 	return (
-		<article className={styles.postCard}>
-			<div className={styles.authorInfo}>
-				<div className={styles.avatar}>
-					{post.author.photo ? <img src={post.author.photo} alt="avatar" /> : null}
+		<div className={styles.page}>
+			<header className={styles.header}>
+				<div className={styles.headerText}>
+					<h1>Forum</h1>
+					<p>Dyskutuj z sąsiadami o tym, co ważne</p>
 				</div>
-				<div>
-					<span className={styles.name}>{post.author.firstName} {post.author.lastName}</span>
-					<span className={styles.date}>{new Date(post.createdAt).toLocaleDateString()}</span>
-				</div>
-			</div>
+			</header>
 
-			<div className={styles.content}>
-				<h2>{post.title}</h2>
-				<p>{post.content}</p>
-				{post.media && <img src={post.media} className={styles.postMedia} alt="post" />}
-			</div>
-
-			<div className={styles.footer}>
-				<button>💬 {post._count.comments} komentarzy</button>
-				<button>🔗 Udostępnij</button>
-			</div>
-		</article>
-	);
-};
-
-export const Forum = () => {
-	return (
-		<div className={styles.forumWrapper}>
-			<div className={styles.container}>
-				<header style={{ marginBottom: '2rem' }}>
-					<h1>Twoja okolica</h1>
-					<p>Posty z Twojego sąsiedztwa</p>
-				</header>
-
-				{mockPosts.map(post => (
-					<PostCard key={post.id} post={post} />
+			<div className={styles.forumGrid}>
+				{forums.map((forum, i) => (
+					<button
+						key={forum.id}
+						className={styles.forumCard}
+						onClick={() => navigate(`/forum/${forum.id}`)}
+						style={{ '--delay': `${i * 60}ms` } as React.CSSProperties}
+					>
+						<span className={styles.forumIcon}>
+							{forum.icon || FORUM_ICONS.default}
+						</span>
+						<div className={styles.forumInfo}>
+							<h2>{forum.name}</h2>
+							<p>{forum.description}</p>
+						</div>
+						<div className={styles.forumMeta}>
+							<span className={styles.postCount}>{forum._count.posts}</span>
+							<span className={styles.postLabel}>wątków</span>
+						</div>
+						<svg className={styles.arrow} viewBox="0 0 24 24" fill="none">
+							<path d="M9 18l6-6-6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+						</svg>
+					</button>
 				))}
 			</div>
 		</div>
-	);
-};
-
+	)
+}

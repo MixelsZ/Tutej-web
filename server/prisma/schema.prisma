@@ -28,6 +28,7 @@ model Neighborhood {
   announcements Announcement[]
   events        Event[]
   listings      Listing[]
+  forums     Forum[]
 }
 
 model User {
@@ -60,6 +61,17 @@ model Event {
   createdAt      DateTime     @default(now())
 }
 
+model Forum {
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String
+  icon           String?
+  neighborhoodId Int
+  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
+  posts          Post[]
+  createdAt      DateTime     @default(now())
+}
+
 model Post {
   id             Int          @id @default(autoincrement())
   title          String
@@ -70,6 +82,8 @@ model Post {
   neighborhoodId Int
   neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
   comments       Comment[]
+  forumId    Int?
+  forum      Forum?  @relation(fields: [forumId], references: [id])
   createdAt      DateTime     @default(now())
 }
 

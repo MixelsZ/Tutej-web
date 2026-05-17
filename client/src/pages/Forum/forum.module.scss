@@ -1,94 +1,168 @@
-$bg-light: #f8f9fa;
-$white: #ffffff;
-$primary: #2563eb;
-$text-main: #1e293b;
-$text-muted: #64748b;
-$border: #e2e8f0;
+@use '@/assets/scss/variables' as *;
 
-.forumWrapper {
-  background-color: $bg-light;
-  min-height: 100vh;
-  padding: 2rem 1rem;
-
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
+.page {
+	padding-bottom: 2rem;
+	font-family: $regularFont;
 }
 
-.postCard {
-  background: $white;
-  border-radius: 12px;
-  border: 1px solid $border;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.header {
+	margin-bottom: 1.75rem;
 
-  .authorInfo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+	h1 {
+		font-family: $headingFont;
+		font-size: 2rem;
+		font-weight: 700;
+		color: $black;
+		margin: 0 0 0.25rem;
+		line-height: 1.2;
+	}
 
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: $primary;
-      object-fit: cover;
-    }
+	p {
+		font-family: $regularFont;
+		font-size: 0.9rem;
+		color: $darkGray;
+		margin: 0;
+	}
+}
 
-    .name {
-      font-weight: 600;
-      color: $text-main;
-      display: block;
-    }
+.forumGrid {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+}
 
-    .date {
-      font-size: 0.8rem;
-      color: $text-muted;
-    }
-  }
+.forumCard {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem 1.1rem;
+	background: $white;
+	border: 1.5px solid $gray;
+	border-radius: 16px;
+	cursor: pointer;
+	text-align: left;
+	width: 100%;
+	transition: all 0.2s ease;
+	animation: slideUp 0.35s ease both;
+	animation-delay: var(--delay, 0ms);
 
-  .content {
-    h2 {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-      color: $text-main;
-    }
-    p {
-      color: darken($text-muted, 10%);
-      line-height: 1.5;
-    }
-    .postMedia {
-      margin-top: 1rem;
-      border-radius: 8px;
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-    }
-  }
+	&:hover {
+		border-color: $green;
+		box-shadow: 0 4px 16px rgba(133, 189, 2, 0.12);
+		transform: translateY(-1px);
 
-  .footer {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid $border;
-    display: flex;
-    gap: 1rem;
+		.arrow path {
+			stroke: $green;
+		}
 
-    button {
-      background: none;
-      border: none;
-      color: $text-muted;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.9rem;
+		.postCount {
+			color: $green;
+		}
+	}
 
-      &:hover {
-        color: $primary;
-      }
-    }
-  }
+	&:active {
+		transform: translateY(0);
+	}
+}
+
+.forumIcon {
+	font-size: 1.6rem;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: $gray;
+	border-radius: 14px;
+	flex-shrink: 0;
+}
+
+.forumInfo {
+	flex: 1;
+	min-width: 0;
+
+	h2 {
+		font-family: $regularFont;
+		font-size: 1rem;
+		font-weight: 700;
+		color: $black;
+		margin: 0 0 0.2rem;
+		letter-spacing: -0.01em;
+	}
+
+	p {
+		font-size: 0.8rem;
+		color: $darkGray;
+		margin: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+.forumMeta {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-shrink: 0;
+	min-width: 36px;
+}
+
+.postCount {
+	font-family: $headingFont;
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: $black;
+	line-height: 1;
+	transition: color 0.2s;
+}
+
+.postLabel {
+	font-size: 0.65rem;
+	color: $darkGray;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+.arrow {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+
+	path {
+		stroke: $darkGray;
+		transition: stroke 0.2s;
+	}
+}
+
+// ── Loading skeleton ───────────────────────────────────────────
+.loadingState {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+}
+
+.skeleton {
+	height: 76px;
+	border-radius: 16px;
+	background: linear-gradient(90deg, $gray 25%, #ebebeb 50%, $gray 75%);
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
+// ── Animations ────────────────────────────────────────────────
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes shimmer {
+	0% { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
 }

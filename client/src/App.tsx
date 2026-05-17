@@ -4,9 +4,11 @@ import { Register } from './pages/Register'
 import { Home } from './pages/Home'
 import { Events } from './pages/Events'
 import { Trade } from './pages/Trade'
-import { Forum } from './pages/Forum'
 import { Notices } from './pages/Notices'
 import { MainLayout } from './components/MainLayout'
+import ForumPage from './pages/Forum'
+import ForumThreadPage from './pages/Forum/ForumThread'
+import ForumPostPage from './pages/Forum/ForumPost'
 
 function App() {
 	const isAuth = localStorage.getItem('isAuth') === 'true'
@@ -20,7 +22,9 @@ function App() {
 					<Route index element={<Home />} />
 					<Route path="events" element={<Events />} />
 					<Route path="trade" element={<Trade />} />
-					<Route path="forum" element={<Forum />} />
+					<Route path="forum" element={<ForumPage />} />
+					<Route path="forum/:forumId" element={<ForumThreadPage />} />
+					<Route path="forum/:forumId/post/:postId" element={<ForumPostPage />} />
 					<Route path="notices" element={<Notices />} />
 				</Route>
 			</Routes>
