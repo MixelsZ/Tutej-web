@@ -134,8 +134,10 @@ export function EventCard({ event }: { event: EventData }) {
 								className={style.heroImage}
 							/>
 							<div className={style.heroOverlay}></div>
-							<h1 className={style.heroTitle}>{event.name}</h1>
-							<p className={style.heroLocation}>{event.place}</p>
+							<div className={style.heroText}>
+								<h1 className={style.heroTitle}>{event.name}</h1>
+								<p className={style.heroLocation}>{event.place}</p>
+							</div>
 
 							<div className={style.mapContainer}>
 								<iframe src={mapUrl} title="Event Map" loading="lazy"></iframe>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import style from './Events.module.scss'
+import style from './events.module.scss'
 import Heading from '../../components/Heading'
 import { EventCard } from '../../components/EventCard'
 
