@@ -1,0 +1,12 @@
+.container {
+	max-width: 1400px;
+	margin: 0 auto;
+
+	.eventsGrid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		margin-top: 40px;
+		gap: 40px;
+		width: 100%;
+	}
+}
