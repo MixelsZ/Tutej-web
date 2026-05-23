@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './forum.module.scss'
+import Heading from '../../components/Heading'
 
 interface Forum {
 	id: number
@@ -9,8 +10,8 @@ interface Forum {
 	description: string
 	icon: string | null
 	_count: { posts: number }
-import styles from './forum.module.scss'
-import Heading from '../../components/Heading'
+}
+
 
 export function Forum() {
 	return (
