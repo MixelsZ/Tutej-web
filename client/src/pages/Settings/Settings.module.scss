@@ -1,0 +1,390 @@
+// client/src/pages/Settings/settings.module.scss
+@use '@/assets/scss/variables' as *;
+
+.page {
+	padding-bottom: 3rem;
+	font-family: $regularFont;
+}
+
+// ── Top bar ───────────────────────────────────────────────────
+.topBar {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1.5rem;
+}
+
+.backBtn {
+	background: transparent;
+	border: 1.5px solid rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	width: 38px;
+	height: 38px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	flex-shrink: 0;
+	transition: background 0.2s;
+
+	&:hover { background: rgba(0, 0, 0, 0.04); }
+
+	svg {
+		width: 18px;
+		height: 18px;
+		path { stroke: $black; }
+	}
+}
+
+.pageTitle {
+	font-family: $headingFont;
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: $black;
+	margin: 0;
+}
+
+// ── Tabs ──────────────────────────────────────────────────────
+.tabs {
+	display: flex;
+	gap: 0.4rem;
+	margin-bottom: 1.25rem;
+	background: $gray;
+	border-radius: 12px;
+	padding: 0.3rem;
+}
+
+.tab {
+	flex: 1;
+	padding: 0.5rem 0;
+	text-align: center;
+	border-radius: 9px;
+	font-family: $regularFont;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: $darkGray;
+	text-decoration: none;
+	transition: all 0.18s;
+
+	&.active {
+		background: $white;
+		color: $black;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+	}
+
+	&:not(.active):hover { color: $black; }
+}
+
+// ── Section / Cards ───────────────────────────────────────────
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	animation: fadeIn 0.2s ease;
+}
+
+.card {
+	background: $white;
+	border: 1.5px solid rgba(0, 0, 0, 0.07);
+	border-radius: 16px;
+	padding: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+}
+
+.cardTitle {
+	font-family: $regularFont;
+	font-size: 0.78rem;
+	font-weight: 800;
+	color: $darkGray;
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	margin: 0;
+}
+
+// ── Setting row ───────────────────────────────────────────────
+.settingRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.settingLabel {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: $black;
+	margin: 0 0 0.15rem;
+}
+
+.settingDesc {
+	font-size: 0.78rem;
+	color: $darkGray;
+	margin: 0;
+	line-height: 1.4;
+}
+
+// ── Toggle ────────────────────────────────────────────────────
+.toggle {
+	width: 44px;
+	height: 26px;
+	border-radius: 13px;
+	background: rgba(0, 0, 0, 0.12);
+	border: none;
+	cursor: pointer;
+	position: relative;
+	flex-shrink: 0;
+	transition: background 0.2s;
+
+	&.on {
+		background: $green;
+	}
+}
+
+.toggleKnob {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: $white;
+	transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+	.on & { transform: translateX(18px); }
+}
+
+// ── Select ────────────────────────────────────────────────────
+.select {
+	padding: 0.45rem 0.75rem;
+	border: 1.5px solid rgba(0, 0, 0, 0.1);
+	border-radius: 9px;
+	font-family: $regularFont;
+	font-size: 0.85rem;
+	color: $black;
+	background: $white;
+	outline: none;
+	cursor: pointer;
+
+	&:focus { border-color: $green; }
+}
+
+// ── Badge ─────────────────────────────────────────────────────
+.badge {
+	background: rgba(133, 189, 2, 0.12);
+	color: darken(#85bd02, 8%);
+	border-radius: 20px;
+	padding: 0.2rem 0.65rem;
+	font-size: 0.75rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+// ── Version ───────────────────────────────────────────────────
+.version {
+	font-size: 0.75rem;
+	color: $darkGray;
+	text-align: center;
+	margin: 0;
+}
+
+// ── Account ───────────────────────────────────────────────────
+.avatarRow {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+}
+
+.avatar {
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	font-weight: 700;
+	color: $black;
+	flex-shrink: 0;
+
+	img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.formRow {
+	display: flex;
+	gap: 0.75rem;
+
+	@media (max-width: 400px) { flex-direction: column; }
+}
+
+.formField {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	flex: 1;
+}
+
+.label {
+	font-size: 0.78rem;
+	font-weight: 600;
+	color: $darkGray;
+}
+
+.input {
+	padding: 0.6rem 0.85rem;
+	border: 1.5px solid rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	font-family: $regularFont;
+	font-size: 0.88rem;
+	color: $black;
+	outline: none;
+	transition: border-color 0.2s;
+	background: $white;
+
+	&:focus { border-color: $green; }
+	&::placeholder { color: $darkGray; }
+}
+
+.textarea {
+	@extend .input;
+	resize: vertical;
+	min-height: 90px;
+}
+
+.saveBtn {
+	padding: 0.65rem 1.5rem;
+	background: $green;
+	color: $white;
+	border: none;
+	border-radius: 10px;
+	font-family: $regularFont;
+	font-size: 0.88rem;
+	font-weight: 700;
+	cursor: pointer;
+	align-self: flex-start;
+	transition: background 0.2s;
+
+	&:disabled { opacity: 0.45; cursor: not-allowed; }
+	&:not(:disabled):hover { background: $lightGreen; }
+}
+
+.success {
+	font-size: 0.82rem;
+	color: $green;
+	font-weight: 600;
+	margin: 0;
+}
+
+.error {
+	font-size: 0.82rem;
+	color: #dc3232;
+	font-weight: 600;
+	margin: 0;
+}
+
+// ── FAQ ───────────────────────────────────────────────────────
+.faqList {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.faqItem {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+	&:last-child { border-bottom: none; }
+}
+
+.faqQuestion {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	padding: 0.85rem 0;
+	background: none;
+	border: none;
+	font-family: $regularFont;
+	font-size: 0.88rem;
+	font-weight: 600;
+	color: $black;
+	cursor: pointer;
+	text-align: left;
+
+	svg {
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
+		transition: transform 0.2s;
+		path { stroke: $darkGray; }
+
+		&.rotated { transform: rotate(180deg); }
+	}
+}
+
+.faqAnswer {
+	font-size: 0.83rem;
+	color: $darkGray;
+	line-height: 1.6;
+	margin: 0 0 0.85rem;
+	padding-right: 1.5rem;
+}
+
+// ── Contact ───────────────────────────────────────────────────
+.contactList {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.contactItem {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	font-family: $regularFont;
+	font-size: 0.88rem;
+	color: $green;
+	text-decoration: none;
+	font-weight: 600;
+
+	svg {
+		width: 17px;
+		height: 17px;
+		path { stroke: $green; }
+	}
+
+	&:hover { text-decoration: underline; }
+}
+
+// ── Sent message ──────────────────────────────────────────────
+.sentMsg {
+	text-align: center;
+	padding: 1.5rem;
+	color: $darkGray;
+
+	span { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+	p { font-size: 0.88rem; margin: 0; }
+}
+
+// ── Skeleton ──────────────────────────────────────────────────
+.skeleton {
+	background: linear-gradient(90deg, $gray 25%, #ebebeb 50%, $gray 75%) !important;
+	background-size: 200% 100% !important;
+	animation: shimmer 1.4s infinite;
+	border: none !important;
+}
+
+// ── Animations ────────────────────────────────────────────────
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(6px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+	0%   { background-position: 200% 0; }
+	100% { background-position: -200% 0; }
+}

@@ -34,7 +34,8 @@ export function Login() {
 				setError(data.message || 'Nieprawidłowy email lub hasło.')
 				return
 			}
-			localStorage.setItem('isAuth', 'true')
+			localStorage.setItem('token', data.token)
+			localStorage.setItem('isAuth', 'true') // zostaw tymczasowo dla kompatybilności
 			console.log('Zalogowano:', data)
 			window.location.href = '/'
 			//navigate("/");

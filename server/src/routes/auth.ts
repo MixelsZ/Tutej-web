@@ -1,14 +1,27 @@
 import { Router, type Request, type Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
-// Use require and any to avoid missing type declarations for jsonwebtoken
-const jwt: any = require('jsonwebtoken')
+import { SignJWT, jwtVerify } from 'jose'
 
 const router = Router()
 const prisma = new PrismaClient()
 
-const JWT_SECRET = process.env.JWT_SECRET || 'tutej_secret_change_in_production'
+const JWT_SECRET = new TextEncoder().encode(
+	process.env.JWT_SECRET || 'tutej_secret_change_in_production'
+)
 const JWT_EXPIRES_IN = '7d'
+
+async function signToken(payload: object): Promise<string> {
+	return await new SignJWT(payload as Record<string, unknown>)
+		.setProtectedHeader({ alg: 'HS256' })
+		.setExpirationTime(JWT_EXPIRES_IN)
+		.sign(JWT_SECRET)
+}
+
+async function verifyToken(token: string) {
+	const { payload } = await jwtVerify(token, JWT_SECRET)
+	return payload as { id: number; email: string; role: string; neighborhoodId: number }
+}
 
 // POST /api/auth/register
 router.post('/register', async (req: Request, res: Response) => {
@@ -28,11 +41,12 @@ router.post('/register', async (req: Request, res: Response) => {
 			},
 		})
 
-		const token = jwt.sign(
-			{ id: user.id, email: user.email, role: user.role, neighborhoodId: user.neighborhoodId },
-			JWT_SECRET,
-			{ expiresIn: JWT_EXPIRES_IN }
-		)
+		const token = await signToken({
+			id: user.id,
+			email: user.email,
+			role: user.role,
+			neighborhoodId: user.neighborhoodId,
+		})
 
 		return res.status(201).json({ message: 'Zarejestrowano.', token, userId: user.id })
 	} catch (error) {
@@ -51,11 +65,12 @@ router.post('/login', async (req: Request, res: Response) => {
 		const isPasswordValid = await bcrypt.compare(password, user.password)
 		if (!isPasswordValid) return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
 
-		const token = jwt.sign(
-			{ id: user.id, email: user.email, role: user.role, neighborhoodId: user.neighborhoodId },
-			JWT_SECRET,
-			{ expiresIn: JWT_EXPIRES_IN }
-		)
+		const token = await signToken({
+			id: user.id,
+			email: user.email,
+			role: user.role,
+			neighborhoodId: user.neighborhoodId,
+		})
 
 		return res.status(200).json({
 			message: 'Zalogowano.',
@@ -81,9 +96,8 @@ router.get('/me', async (req: Request, res: Response) => {
 	const authHeader = req.headers.authorization
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
 
-	const token = authHeader.split(' ')[1]
 	try {
-		const payload = jwt.verify(token, JWT_SECRET) as { id: number }
+		const payload = await verifyToken(authHeader.split(' ')[1])
 		const user = await prisma.user.findUnique({
 			where: { id: payload.id },
 			select: {
@@ -105,14 +119,13 @@ router.get('/me', async (req: Request, res: Response) => {
 	}
 })
 
-// PUT /api/auth/me — aktualizacja profilu
+// PUT /api/auth/me
 router.put('/me', async (req: Request, res: Response) => {
 	const authHeader = req.headers.authorization
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
 
-	const token = authHeader.split(' ')[1]
 	try {
-		const payload = jwt.verify(token, JWT_SECRET) as { id: number }
+		const payload = await verifyToken(authHeader.split(' ')[1])
 		const { firstName, lastName, photo } = req.body
 
 		const user = await prisma.user.update({
@@ -134,9 +147,8 @@ router.put('/me/password', async (req: Request, res: Response) => {
 	const authHeader = req.headers.authorization
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
 
-	const token = authHeader.split(' ')[1]
 	try {
-		const payload = jwt.verify(token, JWT_SECRET) as { id: number }
+		const payload = await verifyToken(authHeader.split(' ')[1])
 		const { currentPassword, newPassword } = req.body
 
 		const user = await prisma.user.findUnique({ where: { id: payload.id } })

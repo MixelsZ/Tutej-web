@@ -1,3 +1,4 @@
+// client/src/App.tsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
@@ -10,10 +11,14 @@ import ForumPage from './pages/Forum'
 import ForumThreadPage from './pages/Forum/ForumThread'
 import ForumPostPage from './pages/Forum/ForumPost'
 import NoticeDetailPage from './pages/Notices/NoticeDetail'
+import SettingsLayout from './pages/Settings'
+import SettingsGeneral from './pages/Settings/General'
+import SettingsAccount from './pages/Settings/Account'
+import SettingsSupport from './pages/Settings/Support'
 
 function App() {
-	const isAuth = localStorage.getItem('isAuth') === 'true'
-	console.log(isAuth)
+	const isAuth = !!localStorage.getItem('token')
+
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -28,6 +33,11 @@ function App() {
 					<Route path="forum/:forumId/post/:postId" element={<ForumPostPage />} />
 					<Route path="notices" element={<NoticesPage />} />
 					<Route path="notices/:noticeId" element={<NoticeDetailPage />} />
+					<Route path="settings" element={<SettingsLayout />}>
+						<Route index element={<SettingsGeneral />} />
+						<Route path="account" element={<SettingsAccount />} />
+						<Route path="support" element={<SettingsSupport />} />
+					</Route>
 				</Route>
 			</Routes>
 		</BrowserRouter>
