@@ -47,6 +47,7 @@ model User {
   listings       Listing[]
   hostedEvents   Event[]        @relation("EventHost")
   attending      Event[]        @relation("EventAttendees")
+  notifications  Notification[]
   createdAt      DateTime       @default(now())
 }
 
@@ -126,4 +127,15 @@ model Listing {
   neighborhoodId Int
   neighborhood   Neighborhood  @relation(fields: [neighborhoodId], references: [id])
   createdAt      DateTime      @default(now())
+}
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   @default("system")
+  title     String
+  body      String
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

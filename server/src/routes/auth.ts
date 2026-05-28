@@ -1,60 +1,156 @@
 import { Router, type Request, type Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
+// Use require and any to avoid missing type declarations for jsonwebtoken
+const jwt: any = require('jsonwebtoken')
 
 const router = Router()
 const prisma = new PrismaClient()
 
-router.post('/register', async (req: Request, res: Response) => {
-	const { firstName, lastName, email, password, neighborhoodId, neighborhood } = req.body
-	console.log('ID DZIELNICY:', neighborhoodId)
+const JWT_SECRET = process.env.JWT_SECRET || 'tutej_secret_change_in_production'
+const JWT_EXPIRES_IN = '7d'
 
+// POST /api/auth/register
+router.post('/register', async (req: Request, res: Response) => {
+	const { firstName, lastName, email, password, neighborhoodId } = req.body
 	try {
 		const existing = await prisma.user.findUnique({ where: { email } })
-		if (existing) {
-			return res.status(409).json({ message: 'Email już istnieje.' })
-		}
+		if (existing) return res.status(409).json({ message: 'Email już istnieje.' })
 
 		const hashed = await bcrypt.hash(password, 10)
-
 		const user = await prisma.user.create({
 			data: {
 				firstName,
 				lastName,
 				email,
 				password: hashed,
-				neighborhood: {
-					connect: { id: Number(neighborhoodId) },
-				},
+				neighborhood: { connect: { id: Number(neighborhoodId) } },
 			},
 		})
 
-		return res.status(201).json({ message: 'Zarejestrowano.', userId: user.id })
+		const token = jwt.sign(
+			{ id: user.id, email: user.email, role: user.role, neighborhoodId: user.neighborhoodId },
+			JWT_SECRET,
+			{ expiresIn: JWT_EXPIRES_IN }
+		)
+
+		return res.status(201).json({ message: 'Zarejestrowano.', token, userId: user.id })
 	} catch (error) {
 		console.error(error)
 		return res.status(500).json({ message: 'Błąd serwera.' })
 	}
 })
+
+// POST /api/auth/login
 router.post('/login', async (req: Request, res: Response) => {
 	const { email, password } = req.body
-
 	try {
 		const user = await prisma.user.findUnique({ where: { email } })
-
-		if (!user) {
-			return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
-		}
+		if (!user) return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
 
 		const isPasswordValid = await bcrypt.compare(password, user.password)
+		if (!isPasswordValid) return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
 
-		if (!isPasswordValid) {
-			return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
-		}
+		const token = jwt.sign(
+			{ id: user.id, email: user.email, role: user.role, neighborhoodId: user.neighborhoodId },
+			JWT_SECRET,
+			{ expiresIn: JWT_EXPIRES_IN }
+		)
 
-		return res.status(200).json({ message: 'Zalogowano.', userId: user.id })
+		return res.status(200).json({
+			message: 'Zalogowano.',
+			token,
+			user: {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				email: user.email,
+				photo: user.photo,
+				role: user.role,
+				neighborhoodId: user.neighborhoodId,
+			},
+		})
 	} catch (error) {
 		console.error(error)
 		return res.status(500).json({ message: 'Błąd serwera.' })
+	}
+})
+
+// GET /api/auth/me
+router.get('/me', async (req: Request, res: Response) => {
+	const authHeader = req.headers.authorization
+	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
+
+	const token = authHeader.split(' ')[1]
+	try {
+		const payload = jwt.verify(token, JWT_SECRET) as { id: number }
+		const user = await prisma.user.findUnique({
+			where: { id: payload.id },
+			select: {
+				id: true,
+				firstName: true,
+				lastName: true,
+				email: true,
+				photo: true,
+				role: true,
+				neighborhoodId: true,
+				neighborhood: { select: { name: true } },
+				createdAt: true,
+			},
+		})
+		if (!user) return res.status(404).json({ message: 'Użytkownik nie znaleziony.' })
+		return res.json(user)
+	} catch {
+		return res.status(401).json({ message: 'Nieprawidłowy token.' })
+	}
+})
+
+// PUT /api/auth/me — aktualizacja profilu
+router.put('/me', async (req: Request, res: Response) => {
+	const authHeader = req.headers.authorization
+	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
+
+	const token = authHeader.split(' ')[1]
+	try {
+		const payload = jwt.verify(token, JWT_SECRET) as { id: number }
+		const { firstName, lastName, photo } = req.body
+
+		const user = await prisma.user.update({
+			where: { id: payload.id },
+			data: { firstName, lastName, photo },
+			select: {
+				id: true, firstName: true, lastName: true,
+				email: true, photo: true, role: true, neighborhoodId: true,
+			},
+		})
+		return res.json(user)
+	} catch {
+		return res.status(401).json({ message: 'Nieprawidłowy token.' })
+	}
+})
+
+// PUT /api/auth/me/password
+router.put('/me/password', async (req: Request, res: Response) => {
+	const authHeader = req.headers.authorization
+	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
+
+	const token = authHeader.split(' ')[1]
+	try {
+		const payload = jwt.verify(token, JWT_SECRET) as { id: number }
+		const { currentPassword, newPassword } = req.body
+
+		const user = await prisma.user.findUnique({ where: { id: payload.id } })
+		if (!user) return res.status(404).json({ message: 'Użytkownik nie znaleziony.' })
+
+		const isValid = await bcrypt.compare(currentPassword, user.password)
+		if (!isValid) return res.status(400).json({ message: 'Nieprawidłowe obecne hasło.' })
+
+		const hashed = await bcrypt.hash(newPassword, 10)
+		await prisma.user.update({ where: { id: payload.id }, data: { password: hashed } })
+
+		return res.json({ message: 'Hasło zmienione.' })
+	} catch {
+		return res.status(401).json({ message: 'Nieprawidłowy token.' })
 	}
 })
 

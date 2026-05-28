@@ -1,8 +1,14 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('USER', 'COUNCILLOR', 'ADMIN');
+DO $$ BEGIN
+  CREATE TYPE "Role" AS ENUM ('USER', 'COUNCILLOR', 'ADMIN');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
 
 -- CreateEnum
-CREATE TYPE "ListingStatus" AS ENUM ('AVAILABLE', 'RESERVED', 'SOLD');
+DO $$ BEGIN
+  CREATE TYPE "ListingStatus" AS ENUM ('AVAILABLE', 'RESERVED', 'SOLD');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
 
 -- CreateTable
 CREATE TABLE "Neighborhood" (
