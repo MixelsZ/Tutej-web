@@ -162,8 +162,8 @@ async function main() {
 			data: {
 				title: 'Nowa piekarnia',
 				content: 'Mają pyszne jagodzianki!',
-				authorId: users[4].id,
-				neighborhoodId: neighborhoods[3].id,
+				authorId: users[3].id,
+				neighborhoodId: neighborhoods[2].id,
 				forumId: forums[0].id
 			},
 		}),

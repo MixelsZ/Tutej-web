@@ -8,27 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  COUNCILLOR
-  ADMIN
-}
-
-enum ListingStatus {
-  AVAILABLE
-  RESERVED
-  SOLD
-}
-
 model Neighborhood {
   id            Int            @id @default(autoincrement())
   name          String
-  users         User[]
-  posts         Post[]
   announcements Announcement[]
   events        Event[]
+  forums        Forum[]
   listings      Listing[]
-  forums     Forum[]
+  posts         Post[]
+  users         User[]
 }
 
 model User {
@@ -40,15 +28,15 @@ model User {
   photo          String?
   role           Role           @default(USER)
   neighborhoodId Int
-  neighborhood   Neighborhood   @relation(fields: [neighborhoodId], references: [id])
-  posts          Post[]
-  comments       Comment[]
-  announcements  Announcement[]
-  listings       Listing[]
-  hostedEvents   Event[]        @relation("EventHost")
-  attending      Event[]        @relation("EventAttendees")
-  notifications  Notification[]
   createdAt      DateTime       @default(now())
+  announcements  Announcement[]
+  comments       Comment[]
+  hostedEvents   Event[]        @relation("EventHost")
+  listings       Listing[]
+  notifications  Notification[]
+  posts          Post[]
+  neighborhood   Neighborhood   @relation(fields: [neighborhoodId], references: [id])
+  attending      Event[]        @relation("EventAttendees")
 }
 
 model Event {
@@ -57,14 +45,14 @@ model Event {
   description    String
   place          String
   date           DateTime
+  neighborhoodId Int
+  createdAt      DateTime     @default(now())
   duration       String?
   price          Decimal?     @db.Decimal(10, 2)
-  authorId       Int
-  author         User         @relation("EventHost", fields: [authorId], references: [id])
-  neighborhoodId Int
+  authorId       Int?
+  author         User?        @relation("EventHost", fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
   attendees      User[]       @relation("EventAttendees")
-  createdAt      DateTime     @default(now())
 }
 
 model Forum {
@@ -73,9 +61,9 @@ model Forum {
   description    String
   icon           String?
   neighborhoodId Int
+  createdAt      DateTime     @default(now())
   neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
   posts          Post[]
-  createdAt      DateTime     @default(now())
 }
 
 model Post {
@@ -84,23 +72,23 @@ model Post {
   content        String
   media          String?
   authorId       Int
-  author         User         @relation(fields: [authorId], references: [id])
   neighborhoodId Int
-  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
-  comments       Comment[]
-  forumId    Int?
-  forum      Forum?  @relation(fields: [forumId], references: [id])
+  forumId        Int?
   createdAt      DateTime     @default(now())
+  comments       Comment[]
+  author         User         @relation(fields: [authorId], references: [id])
+  forum          Forum?       @relation(fields: [forumId], references: [id])
+  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   authorId  Int
-  author    User     @relation(fields: [authorId], references: [id])
   postId    Int
-  post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
 }
 
 model Announcement {
@@ -109,10 +97,10 @@ model Announcement {
   content        String
   media          String?
   authorId       Int
-  author         User         @relation(fields: [authorId], references: [id])
   neighborhoodId Int
-  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
   createdAt      DateTime     @default(now())
+  author         User         @relation(fields: [authorId], references: [id])
+  neighborhood   Neighborhood @relation(fields: [neighborhoodId], references: [id])
 }
 
 model Listing {
@@ -123,19 +111,32 @@ model Listing {
   contact        String
   status         ListingStatus @default(AVAILABLE)
   authorId       Int
-  author         User          @relation(fields: [authorId], references: [id])
   neighborhoodId Int
-  neighborhood   Neighborhood  @relation(fields: [neighborhoodId], references: [id])
   createdAt      DateTime      @default(now())
+  author         User          @relation(fields: [authorId], references: [id])
+  neighborhood   Neighborhood  @relation(fields: [neighborhoodId], references: [id])
 }
+
 model Notification {
   id        Int      @id @default(autoincrement())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   type      String   @default("system")
   title     String
   body      String
   link      String?
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  COUNCILLOR
+  ADMIN
+}
+
+enum ListingStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
 }
