@@ -5,7 +5,7 @@ import { SignJWT, jwtVerify } from 'jose'
 
 const router = Router()
 const prisma = new PrismaClient()
-
+		 
 const JWT_SECRET = new TextEncoder().encode(
 	process.env.JWT_SECRET || 'tutej_secret_change_in_production'
 )
@@ -97,7 +97,8 @@ router.get('/me', async (req: Request, res: Response) => {
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
 
 	try {
-		const payload = await verifyToken(authHeader.split(' ')[1])
+			const token = authHeader.split(' ')[1] as string
+			const payload = await verifyToken(token)
 		const user = await prisma.user.findUnique({
 			where: { id: payload.id },
 			select: {
@@ -125,7 +126,8 @@ router.put('/me', async (req: Request, res: Response) => {
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
 
 	try {
-		const payload = await verifyToken(authHeader.split(' ')[1])
+		const token = authHeader.split(' ')[1] as string
+		const payload = await verifyToken(token)
 		const { firstName, lastName, photo } = req.body
 
 		const user = await prisma.user.update({
@@ -148,7 +150,8 @@ router.put('/me/password', async (req: Request, res: Response) => {
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
 
 	try {
-		const payload = await verifyToken(authHeader.split(' ')[1])
+		const token = authHeader.split(' ')[1] as string
+		const payload = await verifyToken(token)
 		const { currentPassword, newPassword } = req.body
 
 		const user = await prisma.user.findUnique({ where: { id: payload.id } })
