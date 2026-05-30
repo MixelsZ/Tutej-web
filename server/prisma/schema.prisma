@@ -57,6 +57,7 @@ model Event {
   date           DateTime
   duration       String?
   price          Decimal?     @db.Decimal(10, 2)
+  image          String?
   authorId       Int
   author         User         @relation("EventHost", fields: [authorId], references: [id])
   neighborhoodId Int
@@ -101,15 +102,23 @@ model Announcement {
 }
 
 model Listing {
-  id             Int           @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   title          String
   description    String
-  price          Decimal?      @db.Decimal(10, 2)
+  price          Decimal?       @db.Decimal(10, 2)
   contact        String
-  status         ListingStatus @default(AVAILABLE)
+  status         ListingStatus  @default(AVAILABLE)
   authorId       Int
-  author         User          @relation(fields: [authorId], references: [id])
+  author         User           @relation(fields: [authorId], references: [id])
   neighborhoodId Int
-  neighborhood   Neighborhood  @relation(fields: [neighborhoodId], references: [id])
-  createdAt      DateTime      @default(now())
+  neighborhood   Neighborhood   @relation(fields: [neighborhoodId], references: [id])
+  createdAt      DateTime       @default(now())
+  images         ListingImage[]
+}
+
+model ListingImage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  listingId Int
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }

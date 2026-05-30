@@ -1,6 +1,7 @@
 @use '@/assets/scss/variables' as *;
 
 .card {
+	position: relative;
 	border: 1px solid $darkGray;
 	border-radius: 20px;
 	overflow: hidden;
@@ -14,6 +15,33 @@
 	&:hover {
 		transform: translateY(-4px);
 		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+	}
+
+	.tileActions {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		z-index: 20;
+		background-color: transparent;
+
+		.container {
+			background: transparent;
+			padding: 0;
+			box-shadow: none;
+
+			.button.delete {
+				background: #d9534f;
+				border: none;
+				padding: 8px;
+
+				svg {
+					stroke: white;
+					fill: none;
+					width: 20px;
+					height: 20px;
+				}
+			}
+		}
 	}
 
 	.imageWrapper {
@@ -123,8 +151,8 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.4);
-	backdrop-filter: blur(8px);
+	background: rgba(0, 0, 0, 0.2);
+	backdrop-filter: blur(10px);
 	z-index: 2000;
 	display: flex;
 	align-items: center;
@@ -288,7 +316,7 @@
 		}
 
 		.detailsContent {
-			padding: 30px 30px 100px 30px;
+			padding: 30px;
 
 			@media (min-width: 992px) {
 				display: grid;
@@ -352,6 +380,7 @@
 						font-size: 2rem;
 						font-weight: 600;
 						color: $black;
+						background-color: transparent;
 					}
 				}
 			}

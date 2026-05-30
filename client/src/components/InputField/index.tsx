@@ -14,6 +14,7 @@ const icons = {
 				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				stroke="currentColor"
 			/>
 		</svg>
 	),
@@ -30,6 +31,7 @@ const icons = {
 				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				stroke="currentColor"
 			/>
 		</svg>
 	),
@@ -46,22 +48,7 @@ const icons = {
 				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
-			/>
-		</svg>
-	),
-	person: (
-		<svg
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			<path
-				d="M6 21V19C6 17.9391 6.42143 16.9217 7.17157 16.1716C7.92172 15.4214 8.93913 15 10 15H14C15.0609 15 16.0783 15.4214 16.8284 16.1716C17.5786 16.9217 18 17.9391 18 19V21M8 7C8 8.06087 8.42143 9.07828 9.17157 9.82843C9.92172 10.5786 10.9391 11 12 11C13.0609 11 14.0783 10.5786 14.8284 9.82843C15.5786 9.07828 16 8.06087 16 7C16 5.93913 15.5786 4.92172 14.8284 4.17157C14.0783 3.42143 13.0609 3 12 3C10.9391 3 9.92172 3.42143 9.17157 4.17157C8.42143 4.92172 8 5.93913 8 7Z"
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
+				stroke="currentColor"
 			/>
 		</svg>
 	),
@@ -78,6 +65,86 @@ const icons = {
 				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				stroke="currentColor"
+			/>
+		</svg>
+	),
+	price: (
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				d="M8.5 9.5C9.05228 9.5 9.5 9.05228 9.5 8.5C9.5 7.94772 9.05228 7.5 8.5 7.5C7.94772 7.5 7.5 7.94772 7.5 8.5C7.5 9.05228 7.94772 9.5 8.5 9.5Z"
+				fill="currentColor"
+			/>
+			<path
+				d="M8.5 9.5C9.05228 9.5 9.5 9.05228 9.5 8.5C9.5 7.94772 9.05228 7.5 8.5 7.5C7.94772 7.5 7.5 7.94772 7.5 8.5C7.5 9.05228 7.94772 9.5 8.5 9.5Z"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+			<path
+				d="M4 7V10.859C4 11.396 4.213 11.911 4.593 12.291L12.709 20.407C12.897 20.5951 13.1203 20.7443 13.366 20.846C13.6117 20.9478 13.875 21.0002 14.141 21.0002C14.407 21.0002 14.6703 20.9478 14.916 20.846C15.1617 20.7443 15.385 20.5951 15.573 20.407L20.407 15.573C20.5951 15.385 20.7443 15.1617 20.846 14.916C20.9478 14.6703 21.0002 14.407 21.0002 14.141C21.0002 13.875 20.9478 13.6117 20.846 13.366C20.7443 13.1203 20.5951 12.897 20.407 12.709L12.29 4.593C11.9104 4.2135 11.3957 4.00021 10.859 4H7C6.20435 4 5.44129 4.31607 4.87868 4.87868C4.31607 5.44129 4 6.20435 4 7Z"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+	phone: (
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				d="M5 4H9L11 9L8.5 10.5C9.57096 12.6715 11.3285 14.429 13.5 15.5L15 13L20 15V19C20 19.5304 19.7893 20.0391 19.4142 20.4142C19.0391 20.7893 18.5304 21 18 21C14.0993 20.763 10.4202 19.1065 7.65683 16.3432C4.8935 13.5798 3.23705 9.90074 3 6C3 5.46957 3.21071 4.96086 3.58579 4.58579C3.96086 4.21071 4.46957 4 5 4Z"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+	date: (
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				d="M16 3V7M8 3V7M4 11H20M4 7C4 6.46957 4.21071 5.96086 4.58579 5.58579C4.96086 5.21071 5.46957 5 6 5H18C18.5304 5 19.0391 5.21071 19.4142 5.58579C19.7893 5.96086 20 6.46957 20 7V19C20 19.5304 19.7893 20.0391 19.4142 20.4142C19.0391 20.7893 18.5304 21 18 21H6C5.46957 21 4.96086 20.7893 4.58579 20.4142C4.21071 20.0391 4 19.5304 4 19V7ZM8 15H10V17H8V15Z"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+	duration: (
+		<svg
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				d="M15 14L12 12V7M3 12C3 13.1819 3.23279 14.3522 3.68508 15.4442C4.13738 16.5361 4.80031 17.5282 5.63604 18.364C6.47177 19.1997 7.46392 19.8626 8.55585 20.3149C9.64778 20.7672 10.8181 21 12 21C13.1819 21 14.3522 20.7672 15.4442 20.3149C16.5361 19.8626 17.5282 19.1997 18.364 18.364C19.1997 17.5282 19.8626 16.5361 20.3149 15.4442C20.7672 14.3522 21 13.1819 21 12C21 10.8181 20.7672 9.64778 20.3149 8.55585C19.8626 7.46392 19.1997 6.47177 18.364 5.63604C17.5282 4.80031 16.5361 4.13738 15.4442 3.68508C14.3522 3.23279 13.1819 3 12 3C10.8181 3 9.64778 3.23279 8.55585 3.68508C7.46392 4.13738 6.47177 4.80031 5.63604 5.63604C4.80031 6.47177 4.13738 7.46392 3.68508 8.55585C3.23279 9.64778 3 10.8181 3 12Z"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	),
@@ -87,6 +154,7 @@ interface inputFieldProps {
 	placeholder: string
 	type?: string
 	icon?: string
+	value?: string
 	onChange?: (value: string) => void
 }
 
@@ -94,6 +162,7 @@ export default function InputField({
 	placeholder,
 	type = 'text',
 	icon = 'letters',
+	value,
 	onChange,
 }: inputFieldProps) {
 	return (
@@ -103,6 +172,7 @@ export default function InputField({
 				className={styles.input}
 				placeholder={placeholder}
 				type={type}
+				value={value}
 				onChange={(e) => onChange?.(e.target.value)}
 			/>
 		</div>
