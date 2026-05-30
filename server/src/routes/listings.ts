@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 
 router.get('/', async (req, res) => {
 	try {
-		const events = await prisma.event.findMany({
+		const listings = await prisma.listing.findMany({
 			include: {
 				author: {
 					select: {
@@ -15,12 +15,13 @@ router.get('/', async (req, res) => {
 						photo: true,
 					},
 				},
+				images: true,
 			},
 			orderBy: {
-				date: 'asc',
+				createdAt: 'desc',
 			},
 		})
-		res.json(events)
+		res.json(listings)
 	} catch (error) {
 		res.status(500).json({ error: 'Internal server error' })
 	}
@@ -28,10 +29,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
 	try {
-		const { name, description, place, date, duration, price, authorId, image } = req.body
+		const { title, description, price, contact, authorId, images } = req.body
 
-		if (!name || !description || !place || !date || !authorId || !image) {
-			return res.status(400).json({ error: 'Brak wymaganych pól' })
+		if (!title || !description || !contact || !authorId || !images || images.length === 0) {
+			return res.status(400).json({ error: 'Brak wymaganych pól lub zdjęć' })
 		}
 
 		const user = await prisma.user.findUnique({
@@ -42,17 +43,19 @@ router.post('/', async (req, res) => {
 			return res.status(404).json({ error: 'Użytkownik nie znaleziony' })
 		}
 
-		const newEvent = await prisma.event.create({
+		const newListing = await prisma.listing.create({
 			data: {
-				name,
+				title,
 				description,
-				place,
-				date: new Date(date),
-				duration,
 				price: price ? parseFloat(price) : null,
-				image,
+				contact,
 				authorId: parseInt(authorId),
 				neighborhoodId: user.neighborhoodId,
+				images: {
+					create: images.map((base64String: string) => ({
+						url: base64String,
+					})),
+				},
 			},
 			include: {
 				author: {
@@ -62,29 +65,43 @@ router.post('/', async (req, res) => {
 						photo: true,
 					},
 				},
+				images: true,
 			},
 		})
 
-		res.status(201).json(newEvent)
+		res.status(201).json(newListing)
 	} catch (error) {
 		res.status(500).json({ error: 'Internal server error' })
 	}
 })
 
-router.delete('/:id', async (req, res) => {
+router.patch('/:id/status', async (req, res) => {
 	try {
 		const id = parseInt(req.params.id)
-		if (isNaN(id)) {
-			return res.status(400).json({ error: 'Invalid ID' })
+		const { status } = req.body
+
+		if (isNaN(id) || !['AVAILABLE', 'RESERVED', 'SOLD'].includes(status)) {
+			return res.status(400).json({ error: 'Invalid data' })
 		}
 
-		await prisma.event.delete({
+		const updatedListing = await prisma.listing.update({
 			where: { id },
+			data: { status },
+			include: {
+				author: {
+					select: {
+						firstName: true,
+						lastName: true,
+						photo: true,
+					},
+				},
+				images: true,
+			},
 		})
 
-		res.sendStatus(204)
+		return res.json(updatedListing)
 	} catch (error) {
-		res.status(500).json({ error: 'Internal server error' })
+		return res.status(500).json({ error: 'Internal server error' })
 	}
 })
 

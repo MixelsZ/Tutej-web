@@ -1,12 +1,136 @@
-.container {
-	max-width: 1400px;
-	margin: 0 auto;
+@use '@/assets/scss/variables' as *;
 
-	.eventsGrid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-		margin-top: 40px;
-		gap: 40px;
+.header {
+	margin-bottom: 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+
+	.buttons {
+		height: fit-content;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	@media (min-width: 768px) {
+		flex-direction: row;
+		justify-content: space-between;
 		width: 100%;
+
+		.buttons {
+			flex-direction: row-reverse;
+
+			& > * {
+				width: fit-content;
+			}
+		}
+	}
+
+	.subtitle {
+		color: $darkGray;
+		font-size: 2rem;
+		margin: 0;
+	}
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 30px;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 20px;
+	p {
+		\color: $black;
+		margin: 10px 0 0 0;
+	}
+	.textarea {
+		width: 100%;
+		min-height: 120px;
+		padding: 12px;
+		border-radius: 8px;
+		border: none;
+		background-color: $gray;
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+.row {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+	@media (min-width: 576px) {
+		grid-template-columns: 1fr 1fr;
+		gap: 20px;
+	}
+}
+
+.hiddenInput {
+	display: none;
+}
+
+.imageUploadContainer {
+	width: 100%;
+	padding: 40px;
+	border: 2px dashed $darkGray;
+	border-radius: 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.fileLabel {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	span {
+		color: $darkGray;
+	}
+}
+
+.imagePreviewList {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	gap: 15px;
+	margin-top: 15px;
+}
+
+.imagePreviewItem {
+	position: relative;
+	width: 140px;
+	height: 140px;
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 8px;
+	}
+	.removeBtn {
+		position: absolute;
+		top: -10px;
+		right: -10px;
+		background: crimson;
+		color: white;
+		border: none;
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		font-weight: bold;
+		font-size: 16px;
 	}
 }
