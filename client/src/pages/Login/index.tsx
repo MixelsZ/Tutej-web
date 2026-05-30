@@ -5,10 +5,8 @@ import InputField from '../../components/InputField'
 import Button from '../../components/Button'
 import TextLink from '../../components/TextLink'
 import { useState } from 'react'
-//import { useNavigate } from "react-router-dom";
 
 export function Login() {
-	//const navigate = useNavigate();
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState<string | null>(null)
@@ -36,9 +34,9 @@ export function Login() {
 			}
 			localStorage.setItem('token', data.token)
 			localStorage.setItem('isAuth', 'true') // zostaw tymczasowo dla kompatybilności
+			localStorage.setItem('userId', data.userId.toString())
 			console.log('Zalogowano:', data)
 			window.location.href = '/'
-			//navigate("/");
 		} catch {
 			setError('Nie można połączyć się z serwerem.')
 		}

@@ -4,7 +4,11 @@
 	background: $gray;
 	padding: 5px;
 	border-radius: 12px;
-	width: fit-content;
+	width: 100%;
+
+	&:has(.delete) {
+		background-color: transparent;
+	}
 
 	.button {
 		border: 4px solid transparent;
@@ -19,6 +23,10 @@
 		cursor: pointer;
 		transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		-webkit-tap-highlight-color: transparent;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
 
 		&.primary {
 			color: $white;
@@ -29,6 +37,29 @@
 		&.secondary {
 			color: $black;
 			background-image: linear-gradient($gray, $white), linear-gradient($white, $gray);
+		}
+
+		&.delete {
+			background-image:
+				linear-gradient(crimson, lighten(crimson, 15%)),
+				linear-gradient(lighten(crimson, 15%), crimson);
+			padding: 10px;
+			box-shadow: none;
+
+			&:hover {
+				transform: none;
+			}
+
+			& > svg {
+				width: 25px;
+				height: 25px;
+				background-color: transparent;
+
+				& > path {
+					stroke: $white;
+					fill: transparent;
+				}
+			}
 		}
 
 		@media (hover: hover) {
