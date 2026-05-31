@@ -10,9 +10,7 @@ import { MainLayout } from './components/MainLayout'
 import ForumPage from './pages/Forum'
 import ForumThreadPage from './components/ForumThread'
 import ForumPostPage from './components/ForumPost'
-import NoticeDetailPage from './components/NoticeDetail'
 import SettingsLayout from './pages/Settings'
-import SettingsGeneral from './pages/Settings/General'
 import SettingsAccount from './pages/Settings/Account'
 import SettingsSupport from './pages/Settings/Support'
 
@@ -32,9 +30,7 @@ function App() {
 					<Route path="forum/:forumId" element={<ForumThreadPage />} />
 					<Route path="forum/:forumId/post/:postId" element={<ForumPostPage />} />
 					<Route path="notices" element={<NoticesPage />} />
-					<Route path="notices/:noticeId" element={<NoticeDetailPage />} />
 					<Route path="settings" element={<SettingsLayout />}>
-						<Route index element={<SettingsGeneral />} />
 						<Route path="account" element={<SettingsAccount />} />
 						<Route path="support" element={<SettingsSupport />} />
 					</Route>
