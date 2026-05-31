@@ -1,38 +1,135 @@
+@use '@/assets/scss/variables' as *;
+
 .container {
-	height: 100%;
-	position: relative;
-}
-
-.pageTitle {
-	position: absolute;
-	top: 0;
-	left: 0;
-	font-size: 2.5rem;
-	font-weight: 500;
-	color: #000;
-}
-
-.title {
-	position: absolute;
-	top: 10%;
-	left: 50%;
-	transform: translateX(-50%);
-	font-size: 8vw;
-	font-weight: 700;
-	color: #000;
 	margin: 0;
-	white-space: nowrap;
-	opacity: 0;
-	animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
 }
 
-@keyframes fadeUp {
-	from {
-		opacity: 0;
-		transform: translateX(-50%) translateY(20px);
+.mainGrid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 50px;
+
+	@media (min-width: 1024px) {
+		grid-template-columns: 320px 1fr;
+		align-items: flex-start;
+		gap: 60px;
 	}
-	to {
-		opacity: 1;
-		transform: translateX(-50%) translateY(0);
+}
+
+.leftColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+
+	.heading {
+		font-weight: 700;
 	}
+
+	.subtitle {
+		color: $darkGray;
+		font-size: 2rem;
+		margin-top: 5px;
+		width: 290px;
+	}
+}
+
+.illustrationWrapper {
+	position: fixed;
+	bottom: 10px;
+	left: 0;
+	display: flex;
+	padding: 20px;
+}
+
+.floatingIllustration {
+	width: 300px;
+	height: auto;
+	object-fit: contain;
+	pointer-events: none;
+
+	@media (max-width: 1023px) {
+		display: none;
+	}
+}
+
+@keyframes floatAnimation {
+	0% {
+		transform: translateY(0px) rotate(0deg);
+	}
+	50% {
+		transform: translateY(-12px) rotate(1.5deg);
+	}
+	100% {
+		transform: translateY(0px) rotate(0deg);
+	}
+}
+
+.rightColumn {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 40px;
+
+	@media (min-width: 768px) {
+		grid-template-columns: 1fr 1fr;
+		gap: 30px;
+	}
+}
+
+.loader {
+	font-family: $headingFont;
+	font-size: 1.6rem;
+	color: $darkGray;
+	text-align: center;
+	grid-column: 1 / -1;
+	padding: 80px 0;
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	height: 100%;
+
+	.sectionTitle {
+		font-family: $headingFont;
+		font-weight: 600;
+		font-size: 1.6rem;
+		color: $darkGray;
+		text-transform: uppercase;
+		margin: 0;
+		border: 2px solid transparent;
+	}
+}
+
+.cardContainer {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	& > global {
+		height: 100%;
+	}
+}
+
+.empty {
+	background: $white;
+	padding: 60px 20px;
+	border-radius: 16px;
+	text-align: center;
+	font-size: 1.5rem;
+	color: $darkGray;
+	font-family: $headingFont;
+	border: 3px solid $gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	box-sizing: border-box;
 }

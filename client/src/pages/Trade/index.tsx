@@ -150,7 +150,7 @@ export function Trade() {
 					<p className={style.subtitle}>
 						{showMyListings
 							? 'Zarządzaj swoimi ogłoszeniami i zmieniaj ich statusy'
-							: 'Przeglądaj oferty oraz ogłoszenia zamieszczone przez mieszkańców'}
+							: 'Przeglądaj oferty zamieszczone przez mieszkańców'}
 					</p>
 				</div>
 				<div className={style.buttons}>

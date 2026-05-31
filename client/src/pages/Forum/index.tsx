@@ -80,7 +80,7 @@ export default function ForumPage() {
 						</div>
 						<div className={styles.forumFooter}>
 							<div className={styles.forumMeta}>
-								<span className={styles.postLabel}>Liczba watków:</span>
+								<span className={styles.postLabel}>Liczba wątków:</span>
 								<span className={styles.postCount}>{forum._count?.posts || 0}</span>
 							</div>
 							<svg className={styles.arrow} viewBox="0 0 24 24" fill="none">
