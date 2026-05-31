@@ -1,99 +1,112 @@
 @use '@/assets/scss/variables' as *;
 
 .page {
-	padding-bottom: 5rem;
+	width: 100%;
 }
 
 .topBar {
 	display: flex;
 	align-items: center;
-	gap: 0.6rem;
-	margin-bottom: 1.25rem;
+	gap: 2rem;
+	margin-bottom: 3.5rem;
 }
 
 .backBtn {
-	background: transparent;
-	border: 1.5px solid rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
-	width: 38px;
-	height: 38px;
+	background: $white;
+	border: 2px solid rgba(0, 0, 0, 0.06);
+	border-radius: 18px;
+	width: 54px;
+	height: 54px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	flex-shrink: 0;
-	transition: background 0.2s;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 
 	&:hover {
-		background: rgba(0, 0, 0, 0.04);
+		background: rgba(0, 0, 0, 0.02);
+		transform: scale(1.05) translateX(1.5px);
+		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 	}
 
 	svg {
-		width: 18px;
-		height: 18px;
+		width: 24px;
+		height: 24px;
 		path {
-			stroke: $darkGray;
+			stroke: $black;
 		}
 	}
 }
 
 .breadcrumb {
+	font-size: 2rem;
+	font-weight: 700;
+	font-family: $headingFont;
+	color: $black;
 	flex: 1;
-	font-size: 0.82rem;
-	color: lighten($darkGray, 30%);
-	font-weight: 500;
 }
 
 .deletePostBtn {
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	padding: 0.3rem;
-	border-radius: 8px;
-	display: flex;
-	transition: background 0.2s;
+	color: #dc3232;
+	transition: transform 0.2s;
 
 	&:hover {
-		background: rgba(220, 50, 50, 0.08);
+		transform: scale(1.1);
 	}
 
 	svg {
-		width: 18px;
-		height: 18px;
-		path {
-			stroke: #dc3232;
-		}
+		width: 26px;
+		height: 26px;
 	}
 }
 
 .postCard {
-	background: #fff;
-	border: 1.5px solid rgba(0, 0, 0, 0.07);
-	border-radius: 16px;
-	padding: 1.35rem 1.25rem;
-	margin-bottom: 1.25rem;
+	background: $white;
+	border: 2px solid rgba(0, 0, 0, 0.04);
+	border-radius: 32px;
+	padding: 30px;
+	box-shadow: 0 10px 35px rgba(0, 0, 0, 0.03);
+	margin-bottom: 3rem;
+
+	@media (max-width: 768px) {
+		padding: 15px;
+		border-radius: 24px;
+	}
 }
 
 .postAuthorRow {
 	display: flex;
 	align-items: center;
-	gap: 0.6rem;
-	margin-bottom: 0.9rem;
+	justify-content: space-between;
+	margin-bottom: 2.5rem;
+
+	.onlyAuthor {
+		display: flex;
+		gap: 20px;
+	}
 }
 
 .avatar {
-	width: 38px;
-	height: 38px;
+	width: 54px;
+	height: 54px;
 	border-radius: 50%;
-	background: rgba(0, 0, 0, 0.08);
-	overflow: hidden;
+	background: rgba(0, 0, 0, 0.04);
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 0.75rem;
 	font-weight: 700;
-	color: $darkGray;
-	flex-shrink: 0;
+	font-size: 1.8rem;
+	color: $black;
+	overflow: hidden;
+
+	span {
+		background-color: transparent;
+		color: $darkGray;
+	}
 
 	img {
 		width: 100%;
@@ -103,280 +116,255 @@
 }
 
 .authorName {
-	font-size: 0.88rem;
-	font-weight: 600;
-	color: $darkGray;
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: $black;
 	margin: 0;
 }
 
 .postDate {
-	font-size: 0.75rem;
-	color: lighten($darkGray, 35%);
-	margin: 0;
+	font-size: 1.5rem;
+	color: $darkGray;
+	margin: 0.2rem 0 0 0;
 }
 
 .postTitle {
-	font-size: 1.25rem;
-	font-weight: 800;
-	color: $darkGray;
-	margin: 0 0 0.75rem;
-	line-height: 1.3;
+	font-family: $headingFont;
+	font-size: 2.8rem;
+	font-weight: 700;
+	color: $black;
+	margin: 0 0 10px 0;
+	letter-spacing: -0.02em;
+
+	@media (max-width: 768px) {
+		font-size: 2.2rem;
+	}
 }
 
 .postContent {
-	font-size: 0.9rem;
-	color: lighten($darkGray, 15%);
-	line-height: 1.65;
+	font-size: 1.9rem;
+	color: $black;
+	line-height: 1.6;
 	margin: 0;
 	white-space: pre-wrap;
 }
 
 .postMedia {
 	width: 100%;
-	border-radius: 10px;
-	margin-top: 1rem;
+	max-height: 500px;
 	object-fit: cover;
-	max-height: 280px;
+	border-radius: 20px;
+	margin-top: 2rem;
 }
 
 .commentsSection {
-	margin-bottom: 1rem;
+	margin-bottom: 4rem;
 }
 
 .commentsTitle {
-	font-size: 0.95rem;
+	font-family: $headingFont;
+	font-size: 2.2rem;
 	font-weight: 700;
-	color: $darkGray;
-	margin: 0 0 0.9rem;
+	color: $black;
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 1rem;
+	margin: 3rem 0 2rem 0;
 }
 
 .commentsBadge {
-	background: rgba(0, 0, 0, 0.07);
-	border-radius: 20px;
-	padding: 0.1rem 0.55rem;
-	font-size: 0.78rem;
-	font-weight: 600;
-	color: lighten($darkGray, 20%);
+	background: rgba(0, 0, 0, 0.05);
+	padding: 0.2rem 1rem;
+	border-radius: 12px;
+	font-size: 1.6rem;
 }
 
 .noComments {
 	text-align: center;
-	padding: 2rem 1rem;
-	color: lighten($darkGray, 35%);
+	padding: 4rem;
+	background: rgba(0, 0, 0, 0.01);
+	border-radius: 24px;
+	border: 2px dashed rgba(0, 0, 0, 0.05);
 
 	span {
-		font-size: 2rem;
-		display: block;
-		margin-bottom: 0.4rem;
+		font-size: 3rem;
 	}
 
 	p {
-		font-size: 0.85rem;
-		margin: 0;
+		font-size: 1.8rem;
+		color: $darkGray;
+		margin: 1rem 0 0 0;
 	}
 }
 
 .commentList {
 	display: flex;
 	flex-direction: column;
-	gap: 0.65rem;
+	gap: 1.5rem;
+	margin-bottom: 100px;
 }
 
 .comment {
 	display: flex;
-	gap: 0.65rem;
-	animation: slideUp 0.3s ease both;
-	animation-delay: var(--delay, 0ms);
-}
+	flex-direction: column;
+	gap: 1.5rem;
+	background: $white;
+	border: 2px solid rgba(0, 0, 0, 0.03);
+	border-radius: 24px;
+	padding: 2rem;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
 
-.commentAvatar {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-	background: rgba(0, 0, 0, 0.08);
-	overflow: hidden;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 0.65rem;
-	font-weight: 700;
-	color: $darkGray;
-	flex-shrink: 0;
-	margin-top: 0.1rem;
-
-	img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
+	.commentAuthorOnly {
+		display: flex;
+		gap: 20px;
+		align-items: center;
 	}
 }
 
 .commentBody {
 	flex: 1;
-	background: rgba(0, 0, 0, 0.03);
-	border-radius: 12px;
-	padding: 0.65rem 0.85rem;
 }
 
 .commentHeader {
 	display: flex;
-	align-items: center;
-	gap: 0.4rem;
-	margin-bottom: 0.3rem;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-bottom: 0.5rem;
+	flex-wrap: wrap;
 }
 
 .commentAuthor {
-	font-size: 0.82rem;
-	font-weight: 600;
-	color: $darkGray;
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: $black;
 }
 
 .commentDate {
-	font-size: 0.72rem;
-	color: lighten($darkGray, 38%);
-	flex: 1;
+	font-size: 1.4rem;
+	color: $darkGray;
 }
 
 .deleteCommentBtn {
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	padding: 2px;
-	display: flex;
-	border-radius: 6px;
-	transition: background 0.2s;
+	color: #dc3232;
+	padding: 4px;
+	margin-left: auto;
+	opacity: 0.6;
+	transition: opacity 0.2s;
 
 	&:hover {
-		background: rgba(220, 50, 50, 0.1);
+		opacity: 1;
 	}
 
 	svg {
-		width: 13px;
-		height: 13px;
-		path {
-			stroke: #dc3232;
-		}
+		width: 18px;
+		height: 18px;
 	}
 }
 
 .commentContent {
-	font-size: 0.85rem;
-	color: lighten($darkGray, 12%);
-	margin: 0;
+	font-size: 1.8rem;
+	color: $black;
 	line-height: 1.5;
-	white-space: pre-wrap;
+	margin: 0;
 }
 
 .addComment {
-	position: fixed;
-	bottom: 60px;
-	left: 0;
-	right: 0;
-	padding: 0.75rem 1.25rem;
-	background: rgba(255, 255, 255, 0.95);
-	backdrop-filter: blur(12px);
-	border-top: 1px solid rgba(0, 0, 0, 0.07);
 	display: flex;
-	gap: 0.6rem;
-	align-items: flex-end;
-	z-index: 40;
+	gap: 1.5rem;
+	background: $white;
+	border: 2px solid rgba(0, 0, 0, 0.05);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+	padding: 1.5rem;
+	border-radius: 24px;
+	align-items: center;
+	z-index: 10;
+	position: fixed;
+	bottom: 120px;
+	width: calc(100% - 80px);
+	left: auto;
 }
 
 .commentInput {
 	flex: 1;
-	padding: 0.6rem 0.85rem;
-	border: 1.5px solid rgba(0, 0, 0, 0.1);
-	border-radius: 12px;
-	font-size: 0.88rem;
-	color: $darkGray;
-	outline: none;
+	border: none;
 	resize: none;
-	font-family: inherit;
-	transition: border-color 0.2s;
-	max-height: 120px;
+	font-size: 1.8rem;
+	font-family: $regularFont;
+	color: $black;
+	padding: 0.5rem;
 
 	&:focus {
-		border-color: $darkGray;
-	}
-	&::placeholder {
-		color: lighten($darkGray, 40%);
+		outline: none;
 	}
 }
 
 .sendBtn {
-	width: 40px;
-	height: 40px;
-	background: $darkGray;
+	background: $gray;
 	border: none;
+	width: 50px;
+	height: 50px;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	flex-shrink: 0;
-	transition:
-		opacity 0.2s,
-		transform 0.15s;
-
-	&:not(:disabled):hover {
-		opacity: 0.85;
-		transform: scale(1.05);
+	transition: all 0.2s;
+	svg {
+		background-color: transparent;
+		stroke: $darkGray;
 	}
+
+	path {
+		background-color: transparent;
+	}
+
 	&:disabled {
-		opacity: 0.35;
 		cursor: not-allowed;
 	}
 
 	svg {
-		width: 17px;
-		height: 17px;
-		path {
-			stroke: #fff;
-		}
+		width: 22px;
+		height: 22px;
 	}
 }
 
 .loadingPage {
+	padding: 3rem 2rem;
 	display: flex;
 	flex-direction: column;
-	gap: 0.75rem;
+	gap: 2rem;
 }
 
 .skeleton {
-	border-radius: 12px;
-	background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+	background: linear-gradient(
+		90deg,
+		rgba(0, 0, 0, 0.03) 25%,
+		rgba(0, 0, 0, 0.06) 50%,
+		rgba(0, 0, 0, 0.03) 75%
+	);
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
+	border-radius: 16px;
 }
 
 .skeletonTitle {
-	height: 30px;
-	width: 70%;
+	height: 45px;
+	width: 60%;
 }
 
 .skeletonBody {
-	height: 16px;
+	height: 120px;
 	width: 100%;
 }
 
 .notFound {
+	font-size: 2rem;
 	text-align: center;
-	padding: 3rem;
-	color: lighten($darkGray, 30%);
-}
-
-@keyframes slideUp {
-	from {
-		opacity: 0;
-		transform: translateY(8px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+	padding: 5rem;
+	color: $darkGray;
 }
 
 @keyframes shimmer {

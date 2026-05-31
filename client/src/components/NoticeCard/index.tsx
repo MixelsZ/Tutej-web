@@ -63,14 +63,14 @@ export default function NoticeCard({ notice, delay }: NoticeCardProps) {
 								<img src={notice.author.photo} alt="" />
 							) : (
 								<span>
-                            {notice.author?.firstName?.[0]}
+									{notice.author?.firstName?.[0]}
 									{notice.author?.lastName?.[0]}
-                         </span>
+								</span>
 							)}
 						</div>
 						<span className={styles.authorName}>
-                      {notice.author?.firstName} {notice.author?.lastName}
-                   </span>
+							{notice.author?.firstName} {notice.author?.lastName}
+						</span>
 					</div>
 					<svg className={styles.arrow} viewBox="0 0 24 24" fill="none">
 						<path
@@ -121,15 +121,14 @@ export default function NoticeCard({ notice, delay }: NoticeCardProps) {
 										className={styles.detailAvatar}
 									/>
 									<div className={styles.authorInfo}>
-                               <span className={styles.detailAuthorName}>
-                                  {notice.author?.firstName}{' '}
-								   {notice.author?.lastName}
-                               </span>
+										<span className={styles.detailAuthorName}>
+											{notice.author?.firstName} {notice.author?.lastName}
+										</span>
 										<span className={styles.authorRole}>
-                                  {notice.author?.role === 'ADMIN'
-									  ? 'Administrator'
-									  : 'Radny'}
-                               </span>
+											{notice.author?.role === 'ADMIN'
+												? 'Administrator'
+												: 'Radny'}
+										</span>
 									</div>
 								</div>
 							</section>

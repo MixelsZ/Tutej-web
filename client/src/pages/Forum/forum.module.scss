@@ -1,165 +1,144 @@
 @use '@/assets/scss/variables' as *;
 
 .page {
-	padding-bottom: 2rem;
 	font-family: $regularFont;
+	width: 100%;
+	margin: 0 auto;
 }
 
 .header {
-	margin-bottom: 1.75rem;
+	margin-bottom: 3.5rem;
+}
 
-	h1 {
-		font-family: $headingFont;
-		font-size: 2rem;
-		font-weight: 700;
-		color: $black;
-		margin: 0 0 0.25rem;
-		line-height: 1.2;
-	}
-
-	p {
-		font-family: $regularFont;
-		font-size: 0.9rem;
-		color: $darkGray;
-		margin: 0;
-	}
+.subtitle {
+	color: $darkGray;
+	font-size: 2rem;
+	margin: 0.5rem 0 0 0;
 }
 
 .forumGrid {
-	display: flex;
-	flex-direction: column;
-	gap: 0.65rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+	gap: 2.5rem;
 }
 
 .forumCard {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	padding: 1rem 1.1rem;
 	background: $white;
-	border: 1.5px solid $gray;
-	border-radius: 16px;
-	cursor: pointer;
+	border: 2px solid rgba(0, 0, 0, 0.04);
+	border-radius: 32px;
+	padding: 3.5rem;
 	text-align: left;
+	cursor: pointer;
+	box-shadow: 0 10px 35px rgba(0, 0, 0, 0.03);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 3rem;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 	width: 100%;
-	transition: all 0.2s ease;
-	animation: slideUp 0.35s ease both;
-	animation-delay: var(--delay, 0ms);
 
 	&:hover {
-		border-color: $green;
-		box-shadow: 0 4px 16px rgba(133, 189, 2, 0.12);
-		transform: translateY(-1px);
+		transform: translateY(-5px);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.07);
+		border-color: rgba(0, 0, 0, 0.08);
 
-		.arrow path {
-			stroke: $green;
-		}
-
-		.postCount {
-			color: $green;
+		.arrow {
+			transform: translateX(4px);
 		}
 	}
 
-	&:active {
-		transform: translateY(0);
+	@media (max-width: 768px) {
+		padding: 2.5rem;
+		border-radius: 24px;
 	}
 }
 
-.forumIcon {
-	font-size: 1.6rem;
-	width: 50px;
-	height: 50px;
+.forumMainContent {
 	display: flex;
+	gap: 2rem;
+	align-items: flex-start;
+}
+
+.forumIcon {
+	font-size: 4rem;
+	line-height: 1;
+	background: rgba(0, 0, 0, 0.03);
+	padding: 1.5rem;
+	border-radius: 22px;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background: $gray;
-	border-radius: 14px;
 	flex-shrink: 0;
 }
 
 .forumInfo {
-	flex: 1;
-	min-width: 0;
-
 	h2 {
-		font-family: $regularFont;
-		font-size: 1rem;
+		font-family: $headingFont;
+		font-size: 2.3rem;
 		font-weight: 700;
 		color: $black;
-		margin: 0 0 0.2rem;
-		letter-spacing: -0.01em;
+		margin: 0 0 0.6rem 0;
 	}
 
 	p {
-		font-size: 0.8rem;
+		font-size: 1.8rem;
 		color: $darkGray;
+		line-height: 1.5;
 		margin: 0;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 	}
+}
+
+.forumFooter {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-top: 2px solid rgba(0, 0, 0, 0.03);
+	padding-top: 2rem;
 }
 
 .forumMeta {
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	flex-shrink: 0;
-	min-width: 36px;
+	gap: 1rem;
 }
 
 .postCount {
-	font-family: $headingFont;
-	font-size: 1.2rem;
+	font-size: 2.4rem;
 	font-weight: 700;
 	color: $black;
-	line-height: 1;
-	transition: color 0.2s;
+	font-family: $headingFont;
 }
 
 .postLabel {
-	font-size: 0.65rem;
+	font-size: 1.6rem;
 	color: $darkGray;
-	text-transform: uppercase;
-	letter-spacing: 0.03em;
 }
 
 .arrow {
-	width: 18px;
-	height: 18px;
-	flex-shrink: 0;
-
-	path {
-		stroke: $darkGray;
-		transition: stroke 0.2s;
-	}
+	width: 24px;
+	height: 24px;
+	stroke: $darkGray;
+	transition: transform 0.2s;
 }
 
-// ── Loading skeleton ───────────────────────────────────────────
 .loadingState {
-	display: flex;
-	flex-direction: column;
-	gap: 0.65rem;
+	padding: 3rem 2rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+	gap: 2.5rem;
 }
 
 .skeleton {
-	height: 76px;
-	border-radius: 16px;
-	background: linear-gradient(90deg, $gray 25%, #ebebeb 50%, $gray 75%);
+	background: linear-gradient(
+		90deg,
+		rgba(0, 0, 0, 0.03) 25%,
+		rgba(0, 0, 0, 0.06) 50%,
+		rgba(0, 0, 0, 0.03) 75%
+	);
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
-}
-
-// ── Animations ────────────────────────────────────────────────
-@keyframes slideUp {
-	from {
-		opacity: 0;
-		transform: translateY(10px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+	border-radius: 32px;
+	height: 240px;
 }
 
 @keyframes shimmer {

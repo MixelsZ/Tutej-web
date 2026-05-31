@@ -96,11 +96,7 @@ export default function NoticesPage() {
 			) : (
 				<div className={style.grid}>
 					{notices.map((notice, i) => (
-						<NoticeCard
-							key={notice.id}
-							notice={notice}
-							delay={`${i * 50}ms`}
-						/>
+						<NoticeCard key={notice.id} notice={notice} delay={`${i * 50}ms`} />
 					))}
 				</div>
 			)}

@@ -1,5 +1,6 @@
 import { Router, type Request, type Response } from 'express'
 import { PrismaClient } from '@prisma/client'
+import { authenticate } from './auth.js'
 
 const router = Router()
 const prisma = new PrismaClient()
@@ -8,7 +9,14 @@ router.get('/', async (req: Request, res: Response) => {
 	try {
 		const { neighborhoodId } = req.query
 
-		const where = neighborhoodId ? { neighborhoodId: Number(neighborhoodId) } : {}
+		let where = {}
+		if (neighborhoodId) {
+			const parsedId = Number(neighborhoodId)
+			if (isNaN(parsedId)) {
+				return res.status(400).json({ error: 'Nieprawidłowe ID osiedla' })
+			}
+			where = { neighborhoodId: parsedId }
+		}
 
 		const forums = await prisma.forum.findMany({
 			where,
@@ -29,6 +37,12 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/:forumId/posts', async (req: Request, res: Response) => {
 	try {
 		const { forumId } = req.params
+		const forumIdNum = Number(forumId)
+
+		if (isNaN(forumIdNum)) {
+			return res.status(400).json({ error: 'Nieprawidłowe ID forum' })
+		}
+
 		const { search, sort = 'newest' } = req.query
 
 		const orderBy =
@@ -40,7 +54,7 @@ router.get('/:forumId/posts', async (req: Request, res: Response) => {
 
 		const posts = await prisma.post.findMany({
 			where: {
-				forumId: Number(forumId),
+				forumId: forumIdNum,
 				...(search
 					? {
 							OR: [
@@ -70,9 +84,14 @@ router.get('/:forumId/posts', async (req: Request, res: Response) => {
 router.get('/posts/:postId', async (req: Request, res: Response) => {
 	try {
 		const { postId } = req.params
+		const postIdNum = Number(postId)
+
+		if (isNaN(postIdNum)) {
+			return res.status(400).json({ error: 'Nieprawidłowe ID posta' })
+		}
 
 		const post = await prisma.post.findUnique({
-			where: { id: Number(postId) },
+			where: { id: postIdNum },
 			include: {
 				author: {
 					select: { id: true, firstName: true, lastName: true, photo: true },
@@ -99,12 +118,42 @@ router.get('/posts/:postId', async (req: Request, res: Response) => {
 	}
 })
 
-router.post('/:forumId/posts', async (req: Request, res: Response) => {
+router.get('/posts/:postId/comments', async (req: Request, res: Response) => {
+	try {
+		const { postId } = req.params
+		const postIdNum = Number(postId)
+
+		if (isNaN(postIdNum)) {
+			return res.status(400).json({ error: 'Nieprawidłowe ID posta' })
+		}
+
+		const comments = await prisma.comment.findMany({
+			where: { postId: postIdNum },
+			include: {
+				author: {
+					select: { id: true, firstName: true, lastName: true, photo: true },
+				},
+			},
+			orderBy: { createdAt: 'asc' },
+		})
+
+		res.json(comments)
+	} catch (error) {
+		res.status(500).json({ error: 'Błąd serwera' })
+	}
+})
+
+router.post('/:forumId/posts', authenticate, async (req: Request, res: Response) => {
 	try {
 		const { forumId } = req.params
+		const forumIdNum = Number(forumId)
+
+		if (isNaN(forumIdNum)) {
+			return res.status(400).json({ error: 'Nieprawidłowe ID forum' })
+		}
+
 		const { title, content, media } = req.body
-		const authorId = (req as any).user.id
-		const neighborhoodId = (req as any).user.neighborhoodId
+		const user = (req as any).user
 
 		if (!title || !content) {
 			return res.status(400).json({ error: 'Tytuł i treść są wymagane' })
@@ -115,9 +164,9 @@ router.post('/:forumId/posts', async (req: Request, res: Response) => {
 				title,
 				content,
 				media: media || null,
-				authorId,
-				neighborhoodId,
-				forumId: Number(forumId),
+				authorId: user.id,
+				neighborhoodId: user.neighborhoodId,
+				forumId: forumIdNum,
 			},
 			include: {
 				author: {
@@ -133,11 +182,17 @@ router.post('/:forumId/posts', async (req: Request, res: Response) => {
 	}
 })
 
-router.post('/posts/:postId/comments', async (req: Request, res: Response) => {
+router.post('/posts/:postId/comments', authenticate, async (req: Request, res: Response) => {
 	try {
 		const { postId } = req.params
+		const postIdNum = Number(postId)
+
+		if (isNaN(postIdNum)) {
+			return res.status(400).json({ error: 'Nieprawidłowe ID posta' })
+		}
+
 		const { content } = req.body
-		const authorId = (req as any).user.id
+		const user = (req as any).user
 
 		if (!content) {
 			return res.status(400).json({ error: 'Treść komentarza jest wymagana' })
@@ -146,8 +201,8 @@ router.post('/posts/:postId/comments', async (req: Request, res: Response) => {
 		const comment = await prisma.comment.create({
 			data: {
 				content,
-				authorId,
-				postId: Number(postId),
+				authorId: user.id,
+				postId: postIdNum,
 			},
 			include: {
 				author: {
@@ -162,21 +217,26 @@ router.post('/posts/:postId/comments', async (req: Request, res: Response) => {
 	}
 })
 
-router.delete('/posts/:postId', async (req: Request, res: Response) => {
+router.delete('/posts/:postId', authenticate, async (req: Request, res: Response) => {
 	try {
 		const { postId } = req.params
-		const userId = (req as any).user.id
-		const userRole = (req as any).user.role
+		const postIdNum = Number(postId)
 
-		const post = await prisma.post.findUnique({ where: { id: Number(postId) } })
+		if (isNaN(postIdNum)) {
+			return res.status(400).json({ error: 'Nieprawidłowe ID posta' })
+		}
+
+		const user = (req as any).user
+
+		const post = await prisma.post.findUnique({ where: { id: postIdNum } })
 
 		if (!post) return res.status(404).json({ error: 'Post nie znaleziony' })
-		if (post.authorId !== userId && userRole !== 'ADMIN') {
+		if (post.authorId !== user.id && user.role !== 'ADMIN') {
 			return res.status(403).json({ error: 'Brak uprawnień' })
 		}
 
-		await prisma.comment.deleteMany({ where: { postId: Number(postId) } })
-		await prisma.post.delete({ where: { id: Number(postId) } })
+		await prisma.comment.deleteMany({ where: { postId: postIdNum } })
+		await prisma.post.delete({ where: { id: postIdNum } })
 
 		res.json({ message: 'Post usunięty' })
 	} catch (error) {
@@ -184,20 +244,25 @@ router.delete('/posts/:postId', async (req: Request, res: Response) => {
 	}
 })
 
-router.delete('/comments/:commentId', async (req: Request, res: Response) => {
+router.delete('/comments/:commentId', authenticate, async (req: Request, res: Response) => {
 	try {
 		const { commentId } = req.params
-		const userId = (req as any).user.id
-		const userRole = (req as any).user.role
+		const commentIdNum = Number(commentId)
 
-		const comment = await prisma.comment.findUnique({ where: { id: Number(commentId) } })
+		if (isNaN(commentIdNum)) {
+			return res.status(400).json({ error: 'Nieprawidłowe ID komentarza' })
+		}
+
+		const user = (req as any).user
+
+		const comment = await prisma.comment.findUnique({ where: { id: commentIdNum } })
 
 		if (!comment) return res.status(404).json({ error: 'Komentarz nie znaleziony' })
-		if (comment.authorId !== userId && userRole !== 'ADMIN') {
+		if (comment.authorId !== user.id && user.role !== 'ADMIN') {
 			return res.status(403).json({ error: 'Brak uprawnień' })
 		}
 
-		await prisma.comment.delete({ where: { id: Number(commentId) } })
+		await prisma.comment.delete({ where: { id: commentIdNum } })
 
 		res.json({ message: 'Komentarz usunięty' })
 	} catch (error) {
