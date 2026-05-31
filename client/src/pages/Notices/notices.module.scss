@@ -1,0 +1,61 @@
+@use '@/assets/scss/variables' as *;
+
+.container {
+	margin: 0 auto;
+}
+
+.header {
+	margin-bottom: 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	@media (min-width: 768px) {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.subtitle {
+		color: $darkGray;
+		font-size: 2rem;
+		margin: 0;
+	}
+
+	.headerAction {
+		width: 100%;
+
+		@media (min-width: 768px) {
+			width: fit-content;
+		}
+	}
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 30px;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 20px;
+	p {
+		color: $black;
+		margin: 10px 0 0 0;
+	}
+	.textarea {
+		width: 100%;
+		min-height: 120px;
+		padding: 12px;
+		border-radius: 8px;
+		border: none;
+		background-color: $gray;
+		resize: vertical;
+		&:focus {
+			outline: none;
+		}
+	}
+}

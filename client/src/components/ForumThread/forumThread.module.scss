@@ -1,0 +1,402 @@
+@use '@/assets/scss/variables' as *;
+
+.page {
+	font-family: $regularFont;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 30px;
+
+	.buttonContainer {
+		width: fit-content;
+	}
+
+	@media (min-width: 992px) {
+		gap: 2rem;
+		margin-bottom: 3.5rem;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.titleWithBack {
+	display: flex;
+	align-items: center;
+	gap: 1.75rem;
+
+	@media (max-width: 992px) {
+		flex-direction: column;
+	}
+}
+
+.backBtn {
+	background: $white;
+	border: 2px solid rgba(0, 0, 0, 0.06);
+	border-radius: 18px;
+	width: 64px;
+	height: 64px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	flex-shrink: 0;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+	@media (max-width: 992px) {
+		display: none;
+	}
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.02);
+		transform: scale(1.05) translateX(1.5px);
+		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+	}
+
+	svg {
+		width: 28px;
+		height: 28px;
+		path {
+			stroke: $black;
+		}
+	}
+}
+
+.forumTitle {
+	display: flex;
+	gap: 2rem;
+	align-items: center;
+}
+
+.icon {
+	font-size: 4.5rem;
+	line-height: 1;
+}
+
+.subtitle {
+	color: $darkGray;
+	font-size: 1.8rem;
+	margin: 0.2rem 0 0 0;
+}
+
+.newPostForm {
+	background: $white;
+	border: 2px solid rgba(0, 0, 0, 0.04);
+	border-radius: 32px;
+	padding: 3.5rem;
+	box-shadow: 0 10px 35px rgba(0, 0, 0, 0.03);
+	margin-bottom: 3.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 2.5rem;
+	animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+	@media (max-width: 768px) {
+		padding: 2rem;
+		border-radius: 24px;
+	}
+}
+
+.fieldGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+
+	textarea {
+		width: 100%;
+		min-height: 120px;
+		padding: 12px;
+		border-radius: 10px;
+		border: none;
+		background-color: $gray;
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+.label {
+	font-size: 1.8rem;
+	color: $black;
+	font-weight: 700;
+}
+
+.contentInput {
+	width: 100%;
+	padding: 1.5rem;
+	border-radius: 16px;
+	border: 2px solid rgba(0, 0, 0, 0.05);
+	background: rgba(0, 0, 0, 0.01);
+	font-size: 1.8rem;
+	font-family: $regularFont;
+	color: $black;
+	resize: vertical;
+
+	&:focus {
+		outline: none;
+		border-color: $black;
+	}
+}
+
+.formActions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 2rem;
+}
+
+.cancelBtn {
+	background: transparent;
+	border: none;
+	font-size: 1.8rem;
+	font-weight: 700;
+	color: $darkGray;
+	cursor: pointer;
+	padding: 1rem 2rem;
+
+	&:hover {
+		color: $black;
+	}
+}
+
+.toolbar {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	margin-bottom: 3.5rem;
+
+	@media (min-width: 768px) {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.searchBox {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background: $gray;
+	padding: 1.2rem 2rem;
+	border-radius: 20px;
+	width: 100%;
+
+	svg {
+		width: 22px;
+		height: 22px;
+		stroke: $darkGray;
+		background-color: transparent;
+	}
+
+	input {
+		background: transparent;
+		border: none;
+		font-size: 1.8rem;
+		color: $black;
+		width: 100%;
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+.sortTabs {
+	display: flex;
+	gap: 0.5rem;
+	background: rgba(0, 0, 0, 0.04);
+	padding: 0.5rem;
+	border-radius: 18px;
+
+	@media (max-width: 992px) {
+		display: none;
+	}
+}
+
+.sortTab {
+	border: none;
+	background: transparent;
+	padding: 1rem 2rem;
+	border-radius: 14px;
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: $darkGray;
+	cursor: pointer;
+	transition: all 0.2s;
+
+	&.active {
+		background: $white;
+		color: $black;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+	}
+}
+
+.postList {
+	display: flex;
+	flex-direction: column;
+	gap: 2.5rem;
+}
+
+.postCard {
+	background: $white;
+	border: 2px solid rgba(0, 0, 0, 0.04);
+	border-radius: 28px;
+	padding: 3rem;
+	text-align: left;
+	width: 100%;
+	cursor: pointer;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+		border-color: rgba(0, 0, 0, 0.08);
+	}
+}
+
+.postMeta {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.05);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+	color: $black;
+	overflow: hidden;
+
+	span {
+		background-color: transparent;
+		color: $darkGray;
+		font-size: 1.4rem;
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.authorName {
+	font-size: 1.6rem;
+	font-weight: 700;
+	color: $black;
+}
+
+.dot {
+	color: $darkGray;
+}
+
+.date {
+	font-size: 1.6rem;
+	color: $darkGray;
+}
+
+.postTitle {
+	font-family: $headingFont;
+	font-size: 2.3rem;
+	font-weight: 700;
+	color: $black;
+	margin: 0;
+}
+
+.postSnippet {
+	font-size: 1.8rem;
+	color: $darkGray;
+	line-height: 1.5;
+	margin: 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.postFooter {
+	display: flex;
+	align-items: center;
+	margin-top: 0.5rem;
+}
+
+.commentCount {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+	font-size: 1.6rem;
+	color: $darkGray;
+	font-weight: 700;
+
+	svg {
+		width: 18px;
+		height: 18px;
+
+		path {
+			stroke: $darkGray;
+		}
+	}
+}
+
+.empty {
+	text-align: center;
+	padding: 6rem 2rem;
+
+	span {
+		font-size: 4rem;
+	}
+
+	p {
+		font-size: 1.9rem;
+		color: $darkGray;
+		margin: 1.5rem 0 0 0;
+	}
+}
+
+.cardSkeleton {
+	background: linear-gradient(
+		90deg,
+		rgba(0, 0, 0, 0.03) 25%,
+		rgba(0, 0, 0, 0.06) 50%,
+		rgba(0, 0, 0, 0.03) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+	border-radius: 28px;
+}
+
+@keyframes slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-15px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}

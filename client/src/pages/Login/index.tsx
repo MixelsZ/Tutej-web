@@ -32,9 +32,12 @@ export function Login() {
 				setError(data.message || 'Nieprawidłowy email lub hasło.')
 				return
 			}
+
+			localStorage.setItem('token', data.token)
 			localStorage.setItem('isAuth', 'true')
-			localStorage.setItem('userId', data.userId.toString())
-			console.log('Zalogowano:', data)
+			localStorage.setItem('userId', data.user.id.toString())
+			localStorage.setItem('userRole', data.user.role)
+
 			window.location.href = '/'
 		} catch {
 			setError('Nie można połączyć się z serwerem.')

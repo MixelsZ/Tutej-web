@@ -19,15 +19,10 @@ export function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
 	useEffect(() => {
 		function handleClickOutside(e: MouseEvent) {
 			if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-				setTimeout(() => {
-					onClose()
-				}, 0)
+				setTimeout(() => onClose(), 0)
 			}
 		}
-
-		if (isOpen) {
-			document.addEventListener('click', handleClickOutside)
-		}
+		if (isOpen) document.addEventListener('click', handleClickOutside)
 		return () => document.removeEventListener('click', handleClickOutside)
 	}, [isOpen, onClose])
 
@@ -35,10 +30,9 @@ export function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
 		if (!isOpen) setShouldRender(false)
 	}
 
-	const handleLogout = () => {
-		localStorage.removeItem('isAuth')
+	const go = (path: string) => {
 		onClose()
-		navigate('/login')
+		navigate(path)
 	}
 
 	if (!shouldRender) return null
@@ -49,19 +43,16 @@ export function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
 			ref={menuRef}
 			onAnimationEnd={handleAnimationEnd}
 		>
-			<ul>
+			<ul className={styles.list}>
 				<li>
-					<button onClick={onClose}>Ustawienia główne</button>
+					<button className={styles.item} onClick={() => go('/settings/account')}>
+						Konto
+					</button>
 				</li>
 				<li>
-					<button onClick={onClose}>Konto</button>
-				</li>
-				<li>
-					<button onClick={onClose}>Wsparcie</button>
-				</li>
-				<li className={styles.divider} />
-				<li className={styles.logout}>
-					<button onClick={handleLogout}>Wyloguj się</button>
+					<button className={styles.item} onClick={() => go('/settings/support')}>
+						Wsparcie
+					</button>
 				</li>
 			</ul>
 		</div>

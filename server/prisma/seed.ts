@@ -3,6 +3,7 @@ import { PrismaClient, Role, ListingStatus } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
+	await prisma.forum.deleteMany()
 	await prisma.comment.deleteMany()
 	await prisma.post.deleteMany()
 	await prisma.announcement.deleteMany()
@@ -15,6 +16,48 @@ async function main() {
 		prisma.neighborhood.create({ data: { name: 'Osiedle Słoneczne' } }),
 		prisma.neighborhood.create({ data: { name: 'Zielona Dolina' } }),
 		prisma.neighborhood.create({ data: { name: 'Parkowe Wzgórze' } }),
+	])
+	const forums = await Promise.all([
+		prisma.forum.create({
+			data: {
+				name: 'Ogródki i zieleń',
+				description: 'Porady ogrodnicze, wymiana sadzonek',
+				icon: '🌿',
+				neighborhoodId: neighborhoods[0].id,
+			},
+		}),
+		prisma.forum.create({
+			data: {
+				name: 'Zwierzęta',
+				description: 'Zaginione, znalezione, adopcje',
+				icon: '🐾',
+				neighborhoodId: neighborhoods[0].id,
+			},
+		}),
+		prisma.forum.create({
+			data: {
+				name: 'Pomoc sąsiedzka',
+				description: 'Prośby i oferty pomocy',
+				icon: '🤝',
+				neighborhoodId: neighborhoods[0].id,
+			},
+		}),
+		prisma.forum.create({
+			data: {
+				name: 'Bezpieczeństwo',
+				description: 'Zgłoszenia i ostrzeżenia',
+				icon: '🔒',
+				neighborhoodId: neighborhoods[0].id,
+			},
+		}),
+		prisma.forum.create({
+			data: {
+				name: 'Dzieci i rodzina',
+				description: 'Zabawy, szkoły, przedszkola',
+				icon: '🧒',
+				neighborhoodId: neighborhoods[0].id,
+			},
+		}),
 	])
 
 	const users = await Promise.all([
@@ -128,6 +171,34 @@ async function main() {
 					'Jeśli ktoś szuka rzetelnego fachowca, Pan Zbyszek uratował moją zalaną kuchnię w 15 minut.',
 				authorId: users[3].id,
 				neighborhoodId: neighborhoods[2].id,
+				forumId: forums[0].id,
+			},
+		}),
+		prisma.post.create({
+			data: {
+				title: 'Polecam mechanika',
+				content: 'Pan Mirek z garaży robi świetną robotę.',
+				authorId: users[0].id,
+				neighborhoodId: neighborhoods[0].id,
+				forumId: forums[0].id,
+			},
+		}),
+		prisma.post.create({
+			data: {
+				title: 'Remont ulicy',
+				content: 'Uważajcie na utrudnienia na ul. Polnej.',
+				authorId: users[1].id,
+				neighborhoodId: neighborhoods[0].id,
+				forumId: forums[0].id,
+			},
+		}),
+		prisma.post.create({
+			data: {
+				title: 'Nowa piekarnia',
+				content: 'Mają pyszne jagodzianki!',
+				authorId: users[3].id,
+				neighborhoodId: neighborhoods[2].id,
+				forumId: forums[0].id,
 			},
 		}),
 	])
