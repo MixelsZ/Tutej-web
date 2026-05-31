@@ -1,11 +1,11 @@
-import { Router, type Request, type Response } from 'express'
+import { Router, type Request, type Response, type NextFunction } from 'express'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import { SignJWT, jwtVerify } from 'jose'
 
 const router = Router()
 const prisma = new PrismaClient()
-		 
+
 const JWT_SECRET = new TextEncoder().encode(
 	process.env.JWT_SECRET || 'tutej_secret_change_in_production'
 )
@@ -23,7 +23,24 @@ async function verifyToken(token: string) {
 	return payload as { id: number; email: string; role: string; neighborhoodId: number }
 }
 
-// POST /api/auth/register
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+	const authHeader = req.headers.authorization;
+	if (!authHeader?.startsWith('Bearer ')) {
+		return res.status(401).json({ error: 'Brak tokena.' });
+	}
+
+	try {
+		const token = authHeader.split(' ')[1];
+		if (!token) return res.status(401).json({ error: 'Brak tokena.' });
+
+		const { payload } = await jwtVerify(token, JWT_SECRET);
+		(req as any).user = payload;
+		next();
+	} catch {
+		return res.status(401).json({ error: 'Nieprawidłowy token.' });
+	}
+};
+
 router.post('/register', async (req: Request, res: Response) => {
 	const { firstName, lastName, email, password, neighborhoodId } = req.body
 	try {
@@ -55,7 +72,6 @@ router.post('/register', async (req: Request, res: Response) => {
 	}
 })
 
-// POST /api/auth/login
 router.post('/login', async (req: Request, res: Response) => {
 	const { email, password } = req.body
 	try {
@@ -91,24 +107,18 @@ router.post('/login', async (req: Request, res: Response) => {
 	}
 })
 
-// GET /api/auth/me
 router.get('/me', async (req: Request, res: Response) => {
 	const authHeader = req.headers.authorization
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
 
 	try {
-			const token = authHeader.split(' ')[1] as string
-			const payload = await verifyToken(token)
+		const token = authHeader.split(' ')[1] as string
+		const payload = await verifyToken(token)
 		const user = await prisma.user.findUnique({
 			where: { id: payload.id },
 			select: {
-				id: true,
-				firstName: true,
-				lastName: true,
-				email: true,
-				photo: true,
-				role: true,
-				neighborhoodId: true,
+				id: true, firstName: true, lastName: true, email: true,
+				photo: true, role: true, neighborhoodId: true,
 				neighborhood: { select: { name: true } },
 				createdAt: true,
 			},
@@ -120,7 +130,6 @@ router.get('/me', async (req: Request, res: Response) => {
 	}
 })
 
-// PUT /api/auth/me
 router.put('/me', async (req: Request, res: Response) => {
 	const authHeader = req.headers.authorization
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })
@@ -144,7 +153,6 @@ router.put('/me', async (req: Request, res: Response) => {
 	}
 })
 
-// PUT /api/auth/me/password
 router.put('/me/password', async (req: Request, res: Response) => {
 	const authHeader = req.headers.authorization
 	if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'Brak tokena.' })

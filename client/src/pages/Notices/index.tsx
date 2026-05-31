@@ -1,7 +1,10 @@
-// client/src/pages/Notices/index.tsx
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styles from './notices.module.scss'
+import style from './notices.module.scss'
+import Heading from '../../components/Heading'
+import Button from '../../components/Button'
+import FormModal from '../../components/FormModal'
+import InputField from '../../components/InputField'
+import { NoticeCard } from '../../components/NoticeCard'
 
 interface Author {
 	id: number
@@ -20,33 +23,20 @@ interface Notice {
 	author: Author
 }
 
-const ROLE_LABEL: Record<string, string> = {
-	COUNCILLOR: 'Radny',
-	ADMIN: 'Administrator',
-	USER: '',
-}
-
 export default function NoticesPage() {
 	const [notices, setNotices] = useState<Notice[]>([])
 	const [loading, setLoading] = useState(true)
-	const [showForm, setShowForm] = useState(false)
+	const [isFormOpen, setIsFormOpen] = useState(false)
+	const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null)
 	const [newTitle, setNewTitle] = useState('')
 	const [newContent, setNewContent] = useState('')
 	const [submitting, setSubmitting] = useState(false)
-	const navigate = useNavigate()
 
 	const token = localStorage.getItem('token')
+	const userRole = localStorage.getItem('userRole')
 	const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
 
-	const currentUser = (() => {
-		try {
-			return JSON.parse(atob(token!.split('.')[1]))
-		} catch {
-			return null
-		}
-	})()
-
-	const canPost = true // zmień na currentUser?.role === 'COUNCILLOR' || currentUser?.role === 'ADMIN' gdy chcesz ograniczyć
+	const canPost = userRole === 'COUNCILLOR' || userRole === 'ADMIN'
 
 	useEffect(() => {
 		fetch('http://localhost:5000/api/notices', { headers })
@@ -55,6 +45,10 @@ export default function NoticesPage() {
 			.catch(console.error)
 			.finally(() => setLoading(false))
 	}, [])
+
+	useEffect(() => {
+		document.body.style.overflow = selectedNotice ? 'hidden' : 'auto'
+	}, [selectedNotice])
 
 	const handleSubmit = async () => {
 		if (!newTitle.trim() || !newContent.trim()) return
@@ -66,19 +60,13 @@ export default function NoticesPage() {
 				body: JSON.stringify({
 					title: newTitle,
 					content: newContent,
-					authorId: currentUser?.id,
-					neighborhoodId: currentUser?.neighborhoodId,
 				}),
 			})
 			const created = await res.json()
-			if (created.error) {
-				console.error(created.error)
-				return
-			}
 			setNotices((prev) => [created, ...prev])
 			setNewTitle('')
 			setNewContent('')
-			setShowForm(false)
+			setIsFormOpen(false)
 		} catch (err) {
 			console.error(err)
 		} finally {
@@ -86,120 +74,89 @@ export default function NoticesPage() {
 		}
 	}
 
-	const formatDate = (iso: string) => {
-		const d = new Date(iso)
-		const now = new Date()
-		const diff = Math.floor((now.getTime() - d.getTime()) / 1000)
-		if (diff < 60) return 'przed chwilą'
-		if (diff < 3600) return `${Math.floor(diff / 60)} min temu`
-		if (diff < 86400) return `${Math.floor(diff / 3600)} godz. temu`
-		if (diff < 172800) return 'wczoraj'
-		return d.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })
-	}
-
 	return (
-		<div className={styles.page}>
-			<header className={styles.header}>
-				<div className={styles.headerText}>
-					<h1>Ogłoszenia</h1>
-					<p>Ważne informacje od rady i administracji</p>
+		<div className={style.container}>
+			<header className={style.header}>
+				<div>
+					<Heading text={'Ogłoszenia'} />
+					<p className={style.subtitle}>Ważne informacje od radnych</p>
 				</div>
 				{canPost && (
-					<button className={styles.newBtn} onClick={() => setShowForm((p) => !p)}>
-						<svg viewBox="0 0 24 24" fill="none">
-							<path d="M12 5v14M5 12h14" strokeWidth="2.5" strokeLinecap="round" />
-						</svg>
-						Nowe ogłoszenie
-					</button>
+					<div className={style.headerAction}>
+						<Button
+							text="Dodaj nowe ogłoszenie"
+							variant="primary"
+							onClick={() => setIsFormOpen(true)}
+						/>
+					</div>
 				)}
 			</header>
 
-			{showForm && (
-				<div className={styles.form}>
-					<input
-						className={styles.titleInput}
-						placeholder="Tytuł ogłoszenia..."
-						value={newTitle}
-						onChange={(e) => setNewTitle(e.target.value)}
-						maxLength={140}
-					/>
-					<textarea
-						className={styles.contentInput}
-						placeholder="Treść ogłoszenia..."
-						value={newContent}
-						onChange={(e) => setNewContent(e.target.value)}
-						rows={5}
-					/>
-					<div className={styles.formActions}>
-						<button className={styles.cancelBtn} onClick={() => setShowForm(false)}>
-							Anuluj
-						</button>
-						<button
-							className={styles.submitBtn}
-							onClick={handleSubmit}
-							disabled={submitting || !newTitle.trim() || !newContent.trim()}
-						>
-							{submitting ? 'Publikowanie...' : 'Opublikuj'}
-						</button>
-					</div>
+			{loading ? (
+				<div className={style.skeletonList}>
+					{[...Array(4)].map((_, i) => <div key={i} className={style.skeleton} />)}
+				</div>
+			) : (
+				<div className={style.grid}>
+					{notices.map((notice, i) => (
+						<NoticeCard
+							key={notice.id}
+							notice={notice}
+							delay={`${i * 50}ms`}
+							onClick={() => setSelectedNotice(notice)}
+						/>
+					))}
 				</div>
 			)}
 
-			{loading ? (
-				<div className={styles.skeletonList}>
-					{[...Array(4)].map((_, i) => (
-						<div key={i} className={styles.skeleton} />
-					))}
+			<FormModal
+				title="Dodaj nowe ogłoszenie"
+				isOpen={isFormOpen}
+				onClose={() => setIsFormOpen(false)}
+				onSubmit={handleSubmit}
+				isSubmitting={submitting}
+				submitText="Opublikuj"
+			>
+				<div className={style.formGroup}>
+					<p>Tytuł ogłoszenia</p>
+					<InputField value={newTitle} placeholder="Wpisz tytuł..." icon="letters" onChange={setNewTitle} />
 				</div>
-			) : notices.length === 0 ? (
-				<div className={styles.empty}>
-					<span>📋</span>
-					<p>Brak ogłoszeń</p>
+				<div className={style.formGroup}>
+					<p>Treść ogłoszenia</p>
+					<textarea className={style.textarea} value={newContent} onChange={(e) => setNewContent(e.target.value)} />
 				</div>
-			) : (
-				<div className={styles.list}>
-					{notices.map((notice, i) => (
-						<button
-							key={notice.id}
-							className={styles.card}
-							onClick={() => navigate(`/notices/${notice.id}`)}
-							style={{ '--delay': `${i * 50}ms` } as React.CSSProperties}
-						>
-							<div className={styles.cardHeader}>
-								<div className={styles.badgeRow}>
-									{notice.author && (notice.author.role === 'COUNCILLOR' || notice.author.role === 'ADMIN') && (
-										<span className={styles.badge}>
-											{notice.author.role === 'ADMIN' ? '🛡️' : '📣'}{' '}
-											{ROLE_LABEL[notice.author.role]}
-										</span>
-									)}
-								</div>
-								<span className={styles.date}>{formatDate(notice.createdAt)}</span>
-							</div>
-							<h2 className={styles.cardTitle}>{notice.title}</h2>
-							<p className={styles.cardSnippet}>{notice.content}</p>
-							<div className={styles.cardFooter}>
-								<div className={styles.authorRow}>
-									<div className={styles.avatar}>
-										{notice.author?.photo ? (
-											<img src={notice.author.photo} alt="" />
-										) : (
-											<span>
-												{notice.author?.firstName?.[0]}
-												{notice.author?.lastName?.[0]}
-											</span>
-										)}
-									</div>
-									<span className={styles.authorName}>
-										{notice.author?.firstName} {notice.author?.lastName}
-									</span>
-								</div>
-								<svg className={styles.arrow} viewBox="0 0 24 24" fill="none">
-									<path d="M9 18l6-6-6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-								</svg>
-							</div>
+			</FormModal>
+
+			{selectedNotice && (
+				<div className={style.overlay} onClick={() => setSelectedNotice(null)}>
+					<div className={style.fullPage} onClick={(e) => e.stopPropagation()}>
+						<button className={style.back} onClick={() => setSelectedNotice(null)}>
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+							</svg>
 						</button>
-					))}
+
+						<div className={style.detailsContent}>
+							<section>
+								<h1 className={style.heroTitle}>{selectedNotice.title}</h1>
+								<p className={style.description}>{selectedNotice.content}</p>
+							</section>
+
+							<section className={style.authorSection}>
+								<div className={style.hostRow}>
+									<img
+										src={selectedNotice.author?.photo || `https://ui-avatars.com/api/?name=${selectedNotice.author?.firstName}+${selectedNotice.author?.lastName}`}
+										alt="Author"
+										className={style.avatar}
+									/>
+									<div className={style.authorInfo}>
+										<span className={style.authorName}>{selectedNotice.author?.firstName} {selectedNotice.author?.lastName}</span>
+										<span className={style.authorRole}>{selectedNotice.author?.role === 'ADMIN' ? 'Administrator' : 'Radny'}</span>
+									</div>
+								</div>
+							</section>
+						</div>
+					</div>
 				</div>
 			)}
 		</div>

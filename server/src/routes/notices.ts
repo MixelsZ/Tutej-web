@@ -1,10 +1,10 @@
 import { Router, type Request, type Response } from 'express'
 import { PrismaClient } from '@prisma/client'
+import { authenticate } from './auth.js'
 
 const router = Router()
 const prisma = new PrismaClient()
 
-// GET /api/notices?neighborhoodId=X
 router.get('/', async (req: Request, res: Response) => {
 	try {
 		const { neighborhoodId } = req.query
@@ -26,7 +26,6 @@ router.get('/', async (req: Request, res: Response) => {
 	}
 })
 
-// GET /api/notices/:noticeId
 router.get('/:noticeId', async (req: Request, res: Response) => {
 	try {
 		const { noticeId } = req.params
@@ -48,58 +47,21 @@ router.get('/:noticeId', async (req: Request, res: Response) => {
 	}
 })
 
-// POST /api/notices
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authenticate, async (req: Request, res: Response) => {
 	try {
-		const { title, content, media, authorId, neighborhoodId } = req.body
-
-		if (!title || !content) {
-			return res.status(400).json({ error: 'Tytuł i treść są wymagane' })
-		}
-
-		if (!authorId || !neighborhoodId) {
-			return res.status(400).json({ error: 'Brak danych użytkownika' })
-		}
-
+		const user = (req as any).user;
+		// Usunięto ograniczenie do roli COUNCILLOR zgodnie z prośbą
+		const { title, content } = req.body
 		const notice = await prisma.announcement.create({
 			data: {
 				title,
 				content,
-				media: media || null,
-				authorId: Number(authorId),
-				neighborhoodId: Number(neighborhoodId),
+				authorId: user.id,
+				neighborhoodId: user.neighborhoodId,
 			},
-			include: {
-				author: {
-					select: { id: true, firstName: true, lastName: true, photo: true, role: true },
-				},
-			},
+			include: { author: true }
 		})
-
 		res.status(201).json(notice)
-	} catch (error) {
-		console.error(error)
-		res.status(500).json({ error: 'Błąd serwera' })
-	}
-})
-
-// DELETE /api/notices/:noticeId
-router.delete('/:noticeId', async (req: Request, res: Response) => {
-	try {
-		const { noticeId } = req.params
-		const { userId, userRole } = req.body
-
-		const notice = await prisma.announcement.findUnique({ where: { id: Number(noticeId) } })
-
-		if (!notice) return res.status(404).json({ error: 'Ogłoszenie nie znalezione' })
-
-		if (userId && userRole !== 'ADMIN' && notice.authorId !== Number(userId)) {
-			return res.status(403).json({ error: 'Brak uprawnień' })
-		}
-
-		await prisma.announcement.delete({ where: { id: Number(noticeId) } })
-
-		res.json({ message: 'Ogłoszenie usunięte' })
 	} catch (error) {
 		res.status(500).json({ error: 'Błąd serwera' })
 	}

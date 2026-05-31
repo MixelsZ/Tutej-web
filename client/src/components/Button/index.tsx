@@ -4,7 +4,7 @@ import React from 'react'
 interface ButtonProps {
 	text?: string
 	variant?: 'primary' | 'secondary' | 'delete'
-	onClick?: () => void
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	disabled?: boolean
 	children?: React.ReactNode
 }

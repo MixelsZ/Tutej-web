@@ -36,8 +36,8 @@ export function Login() {
 			localStorage.setItem('token', data.token)
 			localStorage.setItem('isAuth', 'true')
 			localStorage.setItem('userId', data.user.id.toString())
+			localStorage.setItem('userRole', data.user.role)
 
-			console.log('Zalogowano:', data)
 			window.location.href = '/'
 		} catch {
 			setError('Nie można połączyć się z serwerem.')
