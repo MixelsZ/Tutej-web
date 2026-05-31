@@ -45,7 +45,6 @@ model User {
   comments       Comment[]
   hostedEvents   Event[]        @relation("EventHost")
   listings       Listing[]
-  notifications  Notification[]
   posts          Post[]
   neighborhood   Neighborhood   @relation(fields: [neighborhoodId], references: [id])
   attending      Event[]        @relation("EventAttendees")
@@ -136,16 +135,4 @@ model ListingImage {
   url       String
   listingId Int
   listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
-}
-
-model Notification {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  type      String   @default("system")
-  title     String
-  body      String
-  link      String?
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
