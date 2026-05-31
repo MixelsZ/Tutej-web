@@ -13,7 +13,7 @@
 .subtitle {
 	color: $darkGray;
 	font-size: 2rem;
-	margin: 0.5rem 0 0 0;
+	margin: 5px 0 0 0;
 }
 
 .forumGrid {
@@ -24,7 +24,7 @@
 
 .forumCard {
 	background: $white;
-	border: 2px solid rgba(0, 0, 0, 0.04);
+	border: 3px solid $gray;
 	border-radius: 32px;
 	padding: 3.5rem;
 	text-align: left;

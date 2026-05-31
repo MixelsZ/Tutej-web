@@ -29,7 +29,7 @@ interface EventCardProps {
 	onDelete: (id: number) => void
 }
 
-export function EventCard({ event, onDelete }: EventCardProps) {
+export default function EventCard({ event, onDelete }: EventCardProps) {
 	const [isOpen, setIsOpen] = useState(false)
 
 	useEffect(() => {
