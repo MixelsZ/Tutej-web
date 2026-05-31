@@ -41,8 +41,8 @@
 
 		&.delete {
 			background-image:
-				linear-gradient(crimson, lighten(crimson, 15%)),
-				linear-gradient(lighten(crimson, 15%), crimson);
+				linear-gradient(hsl(348, 83%, 47%), hsl(348, 83%, 62%)),
+				linear-gradient(hsl(348, 83%, 62%), hsl(348, 83%, 47%));
 			padding: 10px;
 			box-shadow: none;
 

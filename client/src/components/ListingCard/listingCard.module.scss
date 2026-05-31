@@ -93,6 +93,12 @@
 		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 	}
 
+	.statusBadge {
+		position: absolute;
+		top: 15px;
+		left: 0;
+	}
+
 	.statusBadge,
 	.statusBtn {
 		padding: 6px 14px 6px 32px;
