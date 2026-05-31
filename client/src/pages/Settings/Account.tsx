@@ -1,6 +1,7 @@
-// client/src/pages/Settings/Account.tsx
 import { useState, useEffect } from 'react'
-import { getToken, getAuthHeaders } from '../../hooks/useAuth'
+import { getAuthHeaders } from '../../hooks/useAuth'
+import InputField from '../../components/InputField'
+import Button from '../../components/Button'
 import styles from './settings.module.scss'
 
 const API = 'http://localhost:5000'
@@ -14,7 +15,6 @@ export default function SettingsAccount() {
 	const [successMsg, setSuccessMsg] = useState('')
 	const [errorMsg, setErrorMsg] = useState('')
 
-	// Password change
 	const [currentPassword, setCurrentPassword] = useState('')
 	const [newPassword, setNewPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
@@ -45,7 +45,6 @@ export default function SettingsAccount() {
 				body: JSON.stringify({ firstName, lastName }),
 			})
 			if (res.ok) {
-				setSuccessMsg('Profil zaktualizowany!')
 				setTimeout(() => setSuccessMsg(''), 3000)
 			} else {
 				setErrorMsg('Błąd podczas zapisywania.')
@@ -96,7 +95,11 @@ export default function SettingsAccount() {
 		return (
 			<div className={styles.section}>
 				{[...Array(2)].map((_, i) => (
-					<div key={i} className={`${styles.card} ${styles.skeleton}`} style={{ height: 160 }} />
+					<div
+						key={i}
+						className={`${styles.card} ${styles.skeleton}`}
+						style={{ height: 320 }}
+					/>
 				))}
 			</div>
 		)
@@ -114,7 +117,9 @@ export default function SettingsAccount() {
 						{user?.photo ? <img src={user.photo} alt="" /> : <span>{initials}</span>}
 					</div>
 					<div>
-						<p className={styles.settingLabel}>{user?.firstName} {user?.lastName}</p>
+						<p className={styles.settingLabel}>
+							{user?.firstName} {user?.lastName}
+						</p>
 						<p className={styles.settingDesc}>{user?.email}</p>
 						<p className={styles.settingDesc}>{user?.neighborhood?.name}</p>
 					</div>
@@ -123,18 +128,20 @@ export default function SettingsAccount() {
 				<div className={styles.formRow}>
 					<div className={styles.formField}>
 						<label className={styles.label}>Imię</label>
-						<input
-							className={styles.input}
+						<InputField
+							icon="letters"
+							placeholder="Wpisz imię"
 							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
+							onChange={(val) => setFirstName(val)}
 						/>
 					</div>
 					<div className={styles.formField}>
 						<label className={styles.label}>Nazwisko</label>
-						<input
-							className={styles.input}
+						<InputField
+							icon="letters"
+							placeholder="Wpisz nazwisko"
 							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
+							onChange={(val) => setLastName(val)}
 						/>
 					</div>
 				</div>
@@ -142,13 +149,9 @@ export default function SettingsAccount() {
 				{successMsg && <p className={styles.success}>{successMsg}</p>}
 				{errorMsg && <p className={styles.error}>{errorMsg}</p>}
 
-				<button
-					className={styles.saveBtn}
-					onClick={handleSaveProfile}
-					disabled={saving}
-				>
+				<Button onClick={handleSaveProfile} disabled={saving}>
 					{saving ? 'Zapisywanie...' : 'Zapisz zmiany'}
-				</button>
+				</Button>
 			</div>
 
 			<div className={styles.card}>
@@ -156,45 +159,46 @@ export default function SettingsAccount() {
 
 				<div className={styles.formField}>
 					<label className={styles.label}>Obecne hasło</label>
-					<input
-						className={styles.input}
+					<InputField
+						icon="lock"
 						type="password"
+						placeholder="••••••••"
 						value={currentPassword}
-						onChange={(e) => setCurrentPassword(e.target.value)}
-						placeholder="••••••••"
+						onChange={(val) => setCurrentPassword(val)}
 					/>
 				</div>
-				<div className={styles.formField}>
-					<label className={styles.label}>Nowe hasło</label>
-					<input
-						className={styles.input}
-						type="password"
-						value={newPassword}
-						onChange={(e) => setNewPassword(e.target.value)}
-						placeholder="••••••••"
-					/>
-				</div>
-				<div className={styles.formField}>
-					<label className={styles.label}>Powtórz nowe hasło</label>
-					<input
-						className={styles.input}
-						type="password"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						placeholder="••••••••"
-					/>
+				<div className={styles.formRow}>
+					<div className={styles.formField}>
+						<label className={styles.label}>Nowe hasło</label>
+						<InputField
+							icon="lock"
+							type="password"
+							placeholder="••••••••"
+							value={newPassword}
+							onChange={(val) => setNewPassword(val)}
+						/>
+					</div>
+					<div className={styles.formField}>
+						<label className={styles.label}>Powtórz nowe hasło</label>
+						<InputField
+							icon="lock"
+							type="password"
+							placeholder="••••••••"
+							value={confirmPassword}
+							onChange={(val) => setConfirmPassword(val)}
+						/>
+					</div>
 				</div>
 
 				{pwSuccess && <p className={styles.success}>{pwSuccess}</p>}
 				{pwError && <p className={styles.error}>{pwError}</p>}
 
-				<button
-					className={styles.saveBtn}
+				<Button
 					onClick={handleChangePassword}
 					disabled={pwSaving || !currentPassword || !newPassword}
 				>
 					{pwSaving ? 'Zmienianie...' : 'Zmień hasło'}
-				</button>
+				</Button>
 			</div>
 		</div>
 	)

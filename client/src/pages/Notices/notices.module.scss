@@ -54,7 +54,9 @@
 		border: none;
 		background-color: $gray;
 		resize: vertical;
-		&:focus { outline: none; }
+		&:focus {
+			outline: none;
+		}
 	}
 }
 
@@ -79,7 +81,9 @@
 		position: relative;
 		animation: macOpen 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 
-		&::-webkit-scrollbar { display: none; }
+		&::-webkit-scrollbar {
+			display: none;
+		}
 
 		@media (min-width: 768px) {
 			width: auto;
@@ -109,7 +113,9 @@
 			transition: transform 0.2s ease;
 			color: $black;
 
-			&:hover { transform: scale(1.05); }
+			&:hover {
+				transform: scale(1.05);
+			}
 
 			svg {
 				width: 30px;
@@ -155,8 +161,15 @@
 				.authorInfo {
 					display: flex;
 					flex-direction: column;
-					.authorName { font-weight: 600; color: $black; font-size: 1.8rem; }
-					.authorRole { color: $darkGray; font-size: 1.8rem; }
+					.authorName {
+						font-weight: 600;
+						color: $black;
+						font-size: 1.8rem;
+					}
+					.authorRole {
+						color: $darkGray;
+						font-size: 1.8rem;
+					}
 				}
 			}
 		}
@@ -164,6 +177,12 @@
 }
 
 @keyframes macOpen {
-	from { transform: scale(0.9) translateY(40px); opacity: 0; }
-	to { transform: scale(1) translateY(0); opacity: 1; }
+	from {
+		transform: scale(0.9) translateY(40px);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+	}
 }

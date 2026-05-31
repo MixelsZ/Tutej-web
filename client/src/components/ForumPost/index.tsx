@@ -68,7 +68,7 @@ export default function ForumPostPage() {
 				body: JSON.stringify({ content: newComment }),
 			})
 			const comment = await res.json()
-			setPost((prev) => prev ? { ...prev, comments: [...prev.comments, comment] } : prev)
+			setPost((prev) => (prev ? { ...prev, comments: [...prev.comments, comment] } : prev))
 			setNewComment('')
 			setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
 		} catch (err) {
@@ -83,7 +83,9 @@ export default function ForumPostPage() {
 		try {
 			await fetch(`/api/forums/comments/${commentId}`, { method: 'DELETE', headers })
 			setPost((prev) =>
-				prev ? { ...prev, comments: prev.comments.filter((c) => c.id !== commentId) } : prev
+				prev
+					? { ...prev, comments: prev.comments.filter((c) => c.id !== commentId) }
+					: prev,
 			)
 		} catch (err) {
 			console.error(err)
@@ -93,7 +95,10 @@ export default function ForumPostPage() {
 	const handleDeletePost = async () => {
 		if (!confirm('Usunąć ten wątek?')) return
 		try {
-			await fetch(`http://localhost:5000/api/forums/posts/${postId}`, { method: 'DELETE', headers })
+			await fetch(`http://localhost:5000/api/forums/posts/${postId}`, {
+				method: 'DELETE',
+				headers,
+			})
 			navigate(`/forum/${forumId}`)
 		} catch (err) {
 			console.error(err)
@@ -102,7 +107,11 @@ export default function ForumPostPage() {
 
 	const formatDate = (iso: string) =>
 		new Date(iso).toLocaleDateString('pl-PL', {
-			day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit',
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
 		})
 
 	if (loading) {
@@ -123,7 +132,12 @@ export default function ForumPostPage() {
 			<div className={styles.topBar}>
 				<button className={styles.backBtn} onClick={() => navigate(`/forum/${forumId}`)}>
 					<svg viewBox="0 0 24 24" fill="none">
-						<path d="M19 12H5M5 12l7 7M5 12l7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+						<path
+							d="M19 12H5M5 12l7 7M5 12l7-7"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
 					</svg>
 				</button>
 				<span className={styles.breadcrumb}>
@@ -132,7 +146,12 @@ export default function ForumPostPage() {
 				{post.author.id === currentUserId && (
 					<button className={styles.deletePostBtn} onClick={handleDeletePost}>
 						<svg viewBox="0 0 24 24" fill="none">
-							<path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+							<path
+								d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"
+								strokeWidth="1.8"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							/>
 						</svg>
 					</button>
 				)}
@@ -145,11 +164,16 @@ export default function ForumPostPage() {
 						{post.author.photo ? (
 							<img src={post.author.photo} alt="" />
 						) : (
-							<span>{post.author.firstName[0]}{post.author.lastName[0]}</span>
+							<span>
+								{post.author.firstName[0]}
+								{post.author.lastName[0]}
+							</span>
 						)}
 					</div>
 					<div>
-						<p className={styles.authorName}>{post.author.firstName} {post.author.lastName}</p>
+						<p className={styles.authorName}>
+							{post.author.firstName} {post.author.lastName}
+						</p>
 						<p className={styles.postDate}>{formatDate(post.createdAt)}</p>
 					</div>
 				</div>
@@ -184,7 +208,10 @@ export default function ForumPostPage() {
 									{comment.author.photo ? (
 										<img src={comment.author.photo} alt="" />
 									) : (
-										<span>{comment.author.firstName[0]}{comment.author.lastName[0]}</span>
+										<span>
+											{comment.author.firstName[0]}
+											{comment.author.lastName[0]}
+										</span>
 									)}
 								</div>
 								<div className={styles.commentBody}>
@@ -193,9 +220,15 @@ export default function ForumPostPage() {
 											{comment.author.firstName} {comment.author.lastName}
 										</span>
 										<span className={styles.commentDate}>
-											{new Date(comment.createdAt).toLocaleDateString('pl-PL', {
-												day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
-											})}
+											{new Date(comment.createdAt).toLocaleDateString(
+												'pl-PL',
+												{
+													day: 'numeric',
+													month: 'short',
+													hour: '2-digit',
+													minute: '2-digit',
+												},
+											)}
 										</span>
 										{comment.author.id === currentUserId && (
 											<button
@@ -203,7 +236,12 @@ export default function ForumPostPage() {
 												onClick={() => handleDeleteComment(comment.id)}
 											>
 												<svg viewBox="0 0 24 24" fill="none">
-													<path d="M3 6h18M19 6l-1 14H6L5 6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+													<path
+														d="M3 6h18M19 6l-1 14H6L5 6"
+														strokeWidth="1.8"
+														strokeLinecap="round"
+														strokeLinejoin="round"
+													/>
 												</svg>
 											</button>
 										)}
@@ -238,7 +276,12 @@ export default function ForumPostPage() {
 					disabled={submitting || !newComment.trim()}
 				>
 					<svg viewBox="0 0 24 24" fill="none">
-						<path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+						<path
+							d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
 					</svg>
 				</button>
 			</div>

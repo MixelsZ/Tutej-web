@@ -49,7 +49,7 @@ router.get('/:noticeId', async (req: Request, res: Response) => {
 
 router.post('/', authenticate, async (req: Request, res: Response) => {
 	try {
-		const user = (req as any).user;
+		const user = (req as any).user
 		// Usunięto ograniczenie do roli COUNCILLOR zgodnie z prośbą
 		const { title, content } = req.body
 		const notice = await prisma.announcement.create({
@@ -59,7 +59,7 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
 				authorId: user.id,
 				neighborhoodId: user.neighborhoodId,
 			},
-			include: { author: true }
+			include: { author: true },
 		})
 		res.status(201).json(notice)
 	} catch (error) {

@@ -94,7 +94,9 @@ export default function NoticesPage() {
 
 			{loading ? (
 				<div className={style.skeletonList}>
-					{[...Array(4)].map((_, i) => <div key={i} className={style.skeleton} />)}
+					{[...Array(4)].map((_, i) => (
+						<div key={i} className={style.skeleton} />
+					))}
 				</div>
 			) : (
 				<div className={style.grid}>
@@ -119,11 +121,20 @@ export default function NoticesPage() {
 			>
 				<div className={style.formGroup}>
 					<p>Tytuł ogłoszenia</p>
-					<InputField value={newTitle} placeholder="Wpisz tytuł..." icon="letters" onChange={setNewTitle} />
+					<InputField
+						value={newTitle}
+						placeholder="Wpisz tytuł..."
+						icon="letters"
+						onChange={setNewTitle}
+					/>
 				</div>
 				<div className={style.formGroup}>
 					<p>Treść ogłoszenia</p>
-					<textarea className={style.textarea} value={newContent} onChange={(e) => setNewContent(e.target.value)} />
+					<textarea
+						className={style.textarea}
+						value={newContent}
+						onChange={(e) => setNewContent(e.target.value)}
+					/>
 				</div>
 			</FormModal>
 
@@ -131,8 +142,20 @@ export default function NoticesPage() {
 				<div className={style.overlay} onClick={() => setSelectedNotice(null)}>
 					<div className={style.fullPage} onClick={(e) => e.stopPropagation()}>
 						<button className={style.back} onClick={() => setSelectedNotice(null)}>
-							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+							<svg
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M15 6L9 12L15 18"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
 							</svg>
 						</button>
 
@@ -145,13 +168,23 @@ export default function NoticesPage() {
 							<section className={style.authorSection}>
 								<div className={style.hostRow}>
 									<img
-										src={selectedNotice.author?.photo || `https://ui-avatars.com/api/?name=${selectedNotice.author?.firstName}+${selectedNotice.author?.lastName}`}
+										src={
+											selectedNotice.author?.photo ||
+											`https://ui-avatars.com/api/?name=${selectedNotice.author?.firstName}+${selectedNotice.author?.lastName}`
+										}
 										alt="Author"
 										className={style.avatar}
 									/>
 									<div className={style.authorInfo}>
-										<span className={style.authorName}>{selectedNotice.author?.firstName} {selectedNotice.author?.lastName}</span>
-										<span className={style.authorRole}>{selectedNotice.author?.role === 'ADMIN' ? 'Administrator' : 'Radny'}</span>
+										<span className={style.authorName}>
+											{selectedNotice.author?.firstName}{' '}
+											{selectedNotice.author?.lastName}
+										</span>
+										<span className={style.authorRole}>
+											{selectedNotice.author?.role === 'ADMIN'
+												? 'Administrator'
+												: 'Radny'}
+										</span>
 									</div>
 								</div>
 							</section>

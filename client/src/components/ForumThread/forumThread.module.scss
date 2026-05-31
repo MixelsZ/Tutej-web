@@ -227,7 +227,8 @@
 		height: 16px;
 		flex-shrink: 0;
 
-		circle, path {
+		circle,
+		path {
 			stroke: $darkGray;
 		}
 	}
@@ -425,16 +426,32 @@
 
 // ── Animations ────────────────────────────────────────────────
 @keyframes slideUp {
-	from { opacity: 0; transform: translateY(10px); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes slideDown {
-	from { opacity: 0; transform: translateY(-8px); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes shimmer {
-	0% { background-position: 200% 0; }
-	100% { background-position: -200% 0; }
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
 }

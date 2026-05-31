@@ -12,7 +12,6 @@ interface Forum {
 	_count: { posts: number }
 }
 
-
 export function Forum() {
 	return (
 		<div className={styles.container}>
@@ -38,19 +37,19 @@ export default function ForumPage() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-    const fetchForums = async () => {
-        try {
-            const res = await fetch('http://localhost:5000/api/forums')
-            const data = await res.json()
-            setForums(data)
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setLoading(false)
-        }
-    }
-    fetchForums()
-}, [])
+		const fetchForums = async () => {
+			try {
+				const res = await fetch('http://localhost:5000/api/forums')
+				const data = await res.json()
+				setForums(data)
+			} catch (err) {
+				console.error(err)
+			} finally {
+				setLoading(false)
+			}
+		}
+		fetchForums()
+	}, [])
 
 	if (loading) {
 		return (
@@ -91,7 +90,12 @@ export default function ForumPage() {
 							<span className={styles.postLabel}>wątków</span>
 						</div>
 						<svg className={styles.arrow} viewBox="0 0 24 24" fill="none">
-							<path d="M9 18l6-6-6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+							<path
+								d="M9 18l6-6-6-6"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							/>
 						</svg>
 					</button>
 				))}

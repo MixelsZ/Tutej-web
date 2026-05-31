@@ -2,7 +2,7 @@ import { type Request, type Response, type NextFunction } from 'express'
 import { jwtVerify } from 'jose'
 
 const JWT_SECRET = new TextEncoder().encode(
-	process.env.JWT_SECRET || 'tutej_secret_change_in_production'
+	process.env.JWT_SECRET || 'tutej_secret_change_in_production',
 )
 
 export interface AuthRequest extends Request {

@@ -7,7 +7,7 @@ const router = Router()
 const prisma = new PrismaClient()
 
 const JWT_SECRET = new TextEncoder().encode(
-	process.env.JWT_SECRET || 'tutej_secret_change_in_production'
+	process.env.JWT_SECRET || 'tutej_secret_change_in_production',
 )
 const JWT_EXPIRES_IN = '7d'
 
@@ -24,22 +24,22 @@ async function verifyToken(token: string) {
 }
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-	const authHeader = req.headers.authorization;
+	const authHeader = req.headers.authorization
 	if (!authHeader?.startsWith('Bearer ')) {
-		return res.status(401).json({ error: 'Brak tokena.' });
+		return res.status(401).json({ error: 'Brak tokena.' })
 	}
 
 	try {
-		const token = authHeader.split(' ')[1];
-		if (!token) return res.status(401).json({ error: 'Brak tokena.' });
+		const token = authHeader.split(' ')[1]
+		if (!token) return res.status(401).json({ error: 'Brak tokena.' })
 
-		const { payload } = await jwtVerify(token, JWT_SECRET);
-		(req as any).user = payload;
-		next();
+		const { payload } = await jwtVerify(token, JWT_SECRET)
+		;(req as any).user = payload
+		next()
 	} catch {
-		return res.status(401).json({ error: 'Nieprawidłowy token.' });
+		return res.status(401).json({ error: 'Nieprawidłowy token.' })
 	}
-};
+}
 
 router.post('/register', async (req: Request, res: Response) => {
 	const { firstName, lastName, email, password, neighborhoodId } = req.body
@@ -79,7 +79,8 @@ router.post('/login', async (req: Request, res: Response) => {
 		if (!user) return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
 
 		const isPasswordValid = await bcrypt.compare(password, user.password)
-		if (!isPasswordValid) return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
+		if (!isPasswordValid)
+			return res.status(401).json({ message: 'Nieprawidłowy email lub hasło.' })
 
 		const token = await signToken({
 			id: user.id,
@@ -117,8 +118,13 @@ router.get('/me', async (req: Request, res: Response) => {
 		const user = await prisma.user.findUnique({
 			where: { id: payload.id },
 			select: {
-				id: true, firstName: true, lastName: true, email: true,
-				photo: true, role: true, neighborhoodId: true,
+				id: true,
+				firstName: true,
+				lastName: true,
+				email: true,
+				photo: true,
+				role: true,
+				neighborhoodId: true,
 				neighborhood: { select: { name: true } },
 				createdAt: true,
 			},
@@ -143,8 +149,13 @@ router.put('/me', async (req: Request, res: Response) => {
 			where: { id: payload.id },
 			data: { firstName, lastName, photo },
 			select: {
-				id: true, firstName: true, lastName: true,
-				email: true, photo: true, role: true, neighborhoodId: true,
+				id: true,
+				firstName: true,
+				lastName: true,
+				email: true,
+				photo: true,
+				role: true,
+				neighborhoodId: true,
 			},
 		})
 		return res.json(user)

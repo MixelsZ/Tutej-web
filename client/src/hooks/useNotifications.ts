@@ -53,9 +53,7 @@ export function useNotifications() {
 				method: 'PUT',
 				headers: headers(),
 			})
-			setNotifications((prev) =>
-				prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-			)
+			setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)))
 			setUnreadCount((prev) => Math.max(0, prev - 1))
 		} catch {}
 	}
@@ -71,5 +69,12 @@ export function useNotifications() {
 		} catch {}
 	}
 
-	return { notifications, unreadCount, loading, markAsRead, markAllAsRead, refetch: fetchNotifications }
+	return {
+		notifications,
+		unreadCount,
+		loading,
+		markAsRead,
+		markAllAsRead,
+		refetch: fetchNotifications,
+	}
 }

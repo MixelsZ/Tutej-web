@@ -74,8 +74,7 @@ export default function NoticeDetailPage() {
 		})
 
 	const canDelete =
-		notice &&
-		(notice.author.id === currentUser?.id || currentUser?.role === 'ADMIN')
+		notice && (notice.author.id === currentUser?.id || currentUser?.role === 'ADMIN')
 
 	if (loading) {
 		return (
@@ -96,7 +95,12 @@ export default function NoticeDetailPage() {
 			<div className={styles.topBar}>
 				<button className={styles.backBtn} onClick={() => navigate('/notices')}>
 					<svg viewBox="0 0 24 24" fill="none">
-						<path d="M19 12H5M5 12l7 7M5 12l7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+						<path
+							d="M19 12H5M5 12l7 7M5 12l7-7"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
 					</svg>
 				</button>
 				<span className={styles.breadcrumb}>Ogłoszenia</span>

@@ -24,12 +24,16 @@
 	flex-shrink: 0;
 	transition: background 0.2s;
 
-	&:hover { background: rgba(0, 0, 0, 0.04); }
+	&:hover {
+		background: rgba(0, 0, 0, 0.04);
+	}
 
 	svg {
 		width: 18px;
 		height: 18px;
-		path { stroke: $darkGray; }
+		path {
+			stroke: $darkGray;
+		}
 	}
 }
 
@@ -49,12 +53,16 @@
 	display: flex;
 	transition: background 0.2s;
 
-	&:hover { background: rgba(220, 50, 50, 0.08); }
+	&:hover {
+		background: rgba(220, 50, 50, 0.08);
+	}
 
 	svg {
 		width: 18px;
 		height: 18px;
-		path { stroke: #dc3232; }
+		path {
+			stroke: #dc3232;
+		}
 	}
 }
 
@@ -241,12 +249,16 @@
 	border-radius: 6px;
 	transition: background 0.2s;
 
-	&:hover { background: rgba(220, 50, 50, 0.1); }
+	&:hover {
+		background: rgba(220, 50, 50, 0.1);
+	}
 
 	svg {
 		width: 13px;
 		height: 13px;
-		path { stroke: #dc3232; }
+		path {
+			stroke: #dc3232;
+		}
 	}
 }
 
@@ -260,7 +272,7 @@
 
 .addComment {
 	position: fixed;
-	bottom: 60px; 
+	bottom: 60px;
 	left: 0;
 	right: 0;
 	padding: 0.75rem 1.25rem;
@@ -286,8 +298,12 @@
 	transition: border-color 0.2s;
 	max-height: 120px;
 
-	&:focus { border-color: $darkGray; }
-	&::placeholder { color: lighten($darkGray, 40%); }
+	&:focus {
+		border-color: $darkGray;
+	}
+	&::placeholder {
+		color: lighten($darkGray, 40%);
+	}
 }
 
 .sendBtn {
@@ -301,15 +317,25 @@
 	justify-content: center;
 	cursor: pointer;
 	flex-shrink: 0;
-	transition: opacity 0.2s, transform 0.15s;
+	transition:
+		opacity 0.2s,
+		transform 0.15s;
 
-	&:not(:disabled):hover { opacity: 0.85; transform: scale(1.05); }
-	&:disabled { opacity: 0.35; cursor: not-allowed; }
+	&:not(:disabled):hover {
+		opacity: 0.85;
+		transform: scale(1.05);
+	}
+	&:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
 
 	svg {
 		width: 17px;
 		height: 17px;
-		path { stroke: #fff; }
+		path {
+			stroke: #fff;
+		}
 	}
 }
 
@@ -343,11 +369,21 @@
 }
 
 @keyframes slideUp {
-	from { opacity: 0; transform: translateY(8px); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes shimmer {
-	0% { background-position: 200% 0; }
-	100% { background-position: -200% 0; }
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
 }

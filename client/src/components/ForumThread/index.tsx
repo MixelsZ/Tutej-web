@@ -43,7 +43,9 @@ export default function ForumThreadPage() {
 		setLoading(true)
 		try {
 			const params = new URLSearchParams({ sort: s, ...(q ? { search: q } : {}) })
-			const res = await fetch(`http://localhost:5000/api/forums/${forumId}/posts?${params}`, { headers })
+			const res = await fetch(`http://localhost:5000/api/forums/${forumId}/posts?${params}`, {
+				headers,
+			})
 			setPosts(await res.json())
 		} catch (err) {
 			console.error(err)
@@ -55,7 +57,9 @@ export default function ForumThreadPage() {
 	useEffect(() => {
 		fetch('http://localhost:5000/api/forums', { headers })
 			.then((r) => r.json())
-			.then((forums: Forum[]) => setForum(forums.find((f) => f.id === Number(forumId)) || null))
+			.then((forums: Forum[]) =>
+				setForum(forums.find((f) => f.id === Number(forumId)) || null),
+			)
 		fetchPosts()
 	}, [forumId])
 
@@ -107,7 +111,12 @@ export default function ForumThreadPage() {
 			<div className={styles.header}>
 				<button className={styles.backBtn} onClick={() => navigate('/forum')}>
 					<svg viewBox="0 0 24 24" fill="none">
-						<path d="M19 12H5M5 12l7 7M5 12l7-7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+						<path
+							d="M19 12H5M5 12l7 7M5 12l7-7"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
 					</svg>
 				</button>
 				<div className={styles.forumTitle}>
@@ -177,7 +186,11 @@ export default function ForumThreadPage() {
 							className={`${styles.sortTab} ${sort === s ? styles.active : ''}`}
 							onClick={() => handleSort(s)}
 						>
-							{s === 'newest' ? 'Najnowsze' : s === 'oldest' ? 'Najstarsze' : 'Popularne'}
+							{s === 'newest'
+								? 'Najnowsze'
+								: s === 'oldest'
+									? 'Najstarsze'
+									: 'Popularne'}
 						</button>
 					))}
 				</div>
@@ -186,7 +199,9 @@ export default function ForumThreadPage() {
 			{/* Posts list */}
 			{loading ? (
 				<div className={styles.skeletonList}>
-					{[...Array(5)].map((_, i) => <div key={i} className={styles.skeleton} />)}
+					{[...Array(5)].map((_, i) => (
+						<div key={i} className={styles.skeleton} />
+					))}
 				</div>
 			) : posts.length === 0 ? (
 				<div className={styles.empty}>
@@ -207,7 +222,10 @@ export default function ForumThreadPage() {
 									{post.author.photo ? (
 										<img src={post.author.photo} alt="" />
 									) : (
-										<span>{post.author.firstName[0]}{post.author.lastName[0]}</span>
+										<span>
+											{post.author.firstName[0]}
+											{post.author.lastName[0]}
+										</span>
 									)}
 								</div>
 								<span className={styles.authorName}>
@@ -221,7 +239,12 @@ export default function ForumThreadPage() {
 							<div className={styles.postFooter}>
 								<span className={styles.commentCount}>
 									<svg viewBox="0 0 24 24" fill="none">
-										<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+										<path
+											d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+											strokeWidth="1.8"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
 									</svg>
 									{post._count.comments}
 								</span>

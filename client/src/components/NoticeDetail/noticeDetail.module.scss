@@ -26,12 +26,16 @@
 	flex-shrink: 0;
 	transition: background 0.2s;
 
-	&:hover { background: rgba(0, 0, 0, 0.04); }
+	&:hover {
+		background: rgba(0, 0, 0, 0.04);
+	}
 
 	svg {
 		width: 18px;
 		height: 18px;
-		path { stroke: $darkGray; }
+		path {
+			stroke: $darkGray;
+		}
 	}
 }
 
@@ -51,12 +55,16 @@
 	display: flex;
 	transition: background 0.2s;
 
-	&:hover { background: rgba(220, 50, 50, 0.08); }
+	&:hover {
+		background: rgba(220, 50, 50, 0.08);
+	}
 
 	svg {
 		width: 18px;
 		height: 18px;
-		path { stroke: #dc3232; }
+		path {
+			stroke: #dc3232;
+		}
 	}
 }
 
@@ -167,9 +175,18 @@
 	animation: shimmer 1.4s infinite;
 }
 
-.skeletonTitle { height: 32px; width: 65%; }
-.skeletonBody  { height: 16px; width: 100%; }
-.skeletonBodyShort { height: 16px; width: 75%; }
+.skeletonTitle {
+	height: 32px;
+	width: 65%;
+}
+.skeletonBody {
+	height: 16px;
+	width: 100%;
+}
+.skeletonBodyShort {
+	height: 16px;
+	width: 75%;
+}
 
 .notFound {
 	text-align: center;
@@ -179,6 +196,10 @@
 
 // ── Animations ────────────────────────────────────────────────
 @keyframes shimmer {
-	0%   { background-position: 200% 0; }
-	100% { background-position: -200% 0; }
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
 }

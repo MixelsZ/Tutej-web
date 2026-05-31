@@ -10,15 +10,15 @@ router.get('/', async (req: Request, res: Response) => {
 
 		const where = neighborhoodId ? { neighborhoodId: Number(neighborhoodId) } : {}
 
-        const forums = await prisma.forum.findMany({
-            where,
-            include: {
-                _count: {
-                    select: { posts: true },
-                },
-            },
-            orderBy: { createdAt: 'asc' },
-        })
+		const forums = await prisma.forum.findMany({
+			where,
+			include: {
+				_count: {
+					select: { posts: true },
+				},
+			},
+			orderBy: { createdAt: 'asc' },
+		})
 
 		res.json(forums)
 	} catch (error) {
@@ -26,7 +26,7 @@ router.get('/', async (req: Request, res: Response) => {
 	}
 })
 
-router.get('/:forumId/posts',  async (req: Request, res: Response) => {
+router.get('/:forumId/posts', async (req: Request, res: Response) => {
 	try {
 		const { forumId } = req.params
 		const { search, sort = 'newest' } = req.query
@@ -67,7 +67,7 @@ router.get('/:forumId/posts',  async (req: Request, res: Response) => {
 	}
 })
 
-router.get('/posts/:postId',  async (req: Request, res: Response) => {
+router.get('/posts/:postId', async (req: Request, res: Response) => {
 	try {
 		const { postId } = req.params
 
@@ -99,11 +99,11 @@ router.get('/posts/:postId',  async (req: Request, res: Response) => {
 	}
 })
 
-router.post('/:forumId/posts',  async (req: Request, res: Response) => {
+router.post('/:forumId/posts', async (req: Request, res: Response) => {
 	try {
 		const { forumId } = req.params
 		const { title, content, media } = req.body
-		const authorId = (req as any).user.id 
+		const authorId = (req as any).user.id
 		const neighborhoodId = (req as any).user.neighborhoodId
 
 		if (!title || !content) {
@@ -133,7 +133,7 @@ router.post('/:forumId/posts',  async (req: Request, res: Response) => {
 	}
 })
 
-router.post('/posts/:postId/comments',  async (req: Request, res: Response) => {
+router.post('/posts/:postId/comments', async (req: Request, res: Response) => {
 	try {
 		const { postId } = req.params
 		const { content } = req.body
@@ -184,7 +184,7 @@ router.delete('/posts/:postId', async (req: Request, res: Response) => {
 	}
 })
 
-router.delete('/comments/:commentId',  async (req: Request, res: Response) => {
+router.delete('/comments/:commentId', async (req: Request, res: Response) => {
 	try {
 		const { commentId } = req.params
 		const userId = (req as any).user.id
