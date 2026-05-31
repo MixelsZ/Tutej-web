@@ -1,26 +1,75 @@
+@use '@/assets/scss/variables' as *;
+
 .mainContainer {
 	display: flex;
 	flex-direction: column;
-	padding: 80px 0 50px 40px;
-	height: 100vh;
-	gap: 40px;
+	align-items: flex-end;
+	justify-content: center;
+	min-height: 100vh;
+	background-color: $white;
 
-	.container {
-		display: flex;
-		flex-direction: column;
-		padding: 0 40px 0 0;
-		gap: 40px;
+	@media (min-width: 768px) {
+		flex-direction: row-reverse;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 0 0 80px;
+		max-width: 100%;
+		margin: 0;
+		overflow: hidden;
+	}
+}
 
-		.form {
-			display: flex;
-			flex-direction: column;
-			gap: 15px;
-		}
+.illustration {
+	width: 100%;
+	max-width: 350px;
+	height: auto;
 
-		.question {
-			display: flex;
-			flex-direction: column;
-			gap: 0;
-		}
+	@media (min-width: 992px) {
+		max-width: fit-content;
+		height: 80vh;
+		object-fit: cover;
+	}
+}
+
+.container {
+	width: 100%;
+	max-width: 400px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding: 40px 40px 0 40px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+
+	:global(.text) {
+		color: $darkGray;
+		font-size: 1.4rem;
+		margin-bottom: 4px;
+	}
+}
+
+.errorMsg {
+	color: crimson;
+	font-size: 1.4rem;
+	font-weight: 500;
+	margin-top: 8px;
+	text-align: center;
+}
+
+.question {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	margin-top: 10px;
+	font-size: 1.4rem;
+
+	:global(.text) {
+		color: $darkGray;
 	}
 }

@@ -4,7 +4,7 @@
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
-	padding: 80px 40px 150px 40px;
+	padding: 80px 40px 0 40px;
 	overflow: hidden;
 
 	@media (min-width: 768px) {
@@ -19,6 +19,7 @@
 	padding-top: 80px;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
+	padding-bottom: 150px;
 
 	&::-webkit-scrollbar {
 		display: none;
