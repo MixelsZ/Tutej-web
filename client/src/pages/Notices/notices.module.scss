@@ -132,7 +132,7 @@
 			.description {
 				color: $black;
 				line-height: 1.6;
-				font-size: 1.6rem;
+				font-size: 1.8rem;
 				margin-bottom: 40px;
 				white-space: pre-wrap;
 			}
@@ -155,8 +155,8 @@
 				.authorInfo {
 					display: flex;
 					flex-direction: column;
-					.authorName { font-weight: 600; color: $black; font-size: 1.6rem; }
-					.authorRole { color: $darkGray; font-size: 1.4rem; }
+					.authorName { font-weight: 600; color: $black; font-size: 1.8rem; }
+					.authorRole { color: $darkGray; font-size: 1.8rem; }
 				}
 			}
 		}
