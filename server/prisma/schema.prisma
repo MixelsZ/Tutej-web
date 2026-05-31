@@ -8,6 +8,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  COUNCILLOR
+  ADMIN
+}
+
+enum ListingStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+}
+
 model Neighborhood {
   id            Int            @id @default(autoincrement())
   name          String
@@ -45,7 +57,6 @@ model Event {
   description    String
   place          String
   date           DateTime
-  neighborhoodId Int
   createdAt      DateTime     @default(now())
   duration       String?
   price          Decimal?     @db.Decimal(10, 2)

@@ -32,9 +32,11 @@ export function Login() {
 				setError(data.message || 'Nieprawidłowy email lub hasło.')
 				return
 			}
+
 			localStorage.setItem('token', data.token)
-			localStorage.setItem('isAuth', 'true') // zostaw tymczasowo dla kompatybilności
-			localStorage.setItem('userId', data.userId.toString())
+			localStorage.setItem('isAuth', 'true')
+			localStorage.setItem('userId', data.user.id.toString())
+
 			console.log('Zalogowano:', data)
 			window.location.href = '/'
 		} catch {
