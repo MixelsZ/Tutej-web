@@ -118,7 +118,7 @@ export function Register() {
 					onChange={(val) => setFormData({ ...formData, neighborhoodId: val })}
 				/>
 				<Button text="Zarejestruj się" onClick={handleRegister} />
-				{error && <div className={style.errorMsg}>{error}</div>}
+				{error && <div className={style.errorMsg} data-testid="error-msg">{error}</div>}
 			</div>
 			<div className={style.question}>
 				<Text text="Posiadasz już konto?" />
