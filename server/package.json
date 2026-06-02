@@ -7,7 +7,7 @@
 		"start": "tsx src/index.ts",
 		"dev": "tsx watch src/index.ts",
 		"build:prisma": "prisma generate",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "vitest run"
 	},
 	"keywords": [],
 	"author": "",
@@ -29,10 +29,13 @@
 		"@types/express": "^5.0.6",
 		"@types/jsonwebtoken": "^9.0.10",
 		"@types/node": "^25.5.2",
+		"@types/supertest": "^7.2.0",
 		"nodemon": "^3.1.14",
 		"prisma": "^6.19.3",
+		"supertest": "^7.2.2",
 		"ts-node": "^10.9.2",
-		"typescript": "^6.0.2"
+		"typescript": "^6.0.2",
+		"vitest": "^4.1.8"
 	},
 	"prisma": {
 		"seed": "npx tsx prisma/seed.ts"
